@@ -1,5 +1,5 @@
 """
-WSGI config for hilichurlian_database project.
+WSGI config for hilichurlian_database_project project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'hilichurlian_database.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'hilichurlian_database_project.settings')
 
 application = get_wsgi_application()
