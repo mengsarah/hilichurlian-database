@@ -11,21 +11,30 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
-# Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
+# Settings changed for deployment
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'o46_3cpp947uxj-0mkoru)&7dugehc^-brm_204+t^r3*l*ia^'
+# SECRET_KEY = 'o46_3cpp947uxj-0mkoru)&7dugehc^-brm_204+t^r3*l*ia^')
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'not-secret')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# DEBUG = True
+DEBUG = (os.environ.get('DJANGO_DEBUG', 'False') == 'True')
 
-ALLOWED_HOSTS = []
+if DEBUG:
+    ALLOWED_HOSTS = []
+else:
+    ALLOWED_HOSTS = ['.hilichurlian-database.herokuapp.com']
 
 
 # Application definition
@@ -76,8 +85,12 @@ WSGI_APPLICATION = 'hilichurlian_database_project.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get('POSTGRES_DB_NAME', 'mydatabase'),
+        'USER': os.environ.get('POSTGRES_USER', 'mysuperuser'),
+        'PASSWORD': os.environ.get('POSTGRES_PASS', 'mypassword'),
+        'HOST': os.environ.get('POSTGRES_HOST', '127.0.0.1'),
+        'PORT': os.environ.get('POSTGRES_POST', '5432'),
     }
 }
 
