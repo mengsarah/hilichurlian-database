@@ -7,6 +7,8 @@ from django.db import models
 class Word(models.Model):
 	word = models.CharField(max_length=25, primary_key=True)
 	translation = models.CharField(max_length=100, blank=True)
+	def __str__(self):
+		return self.word
 
 class CompleteUtterance(models.Model):
 	# making the autofield explicit as a reminder
@@ -18,3 +20,5 @@ class CompleteUtterance(models.Model):
 	translation = models.CharField(max_length=200, blank=True)
 	context = models.TextField(blank=True)
 	source = models.CharField(max_length=200) # URL
+	def __str__(self):
+		return self.utterance
