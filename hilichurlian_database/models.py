@@ -18,6 +18,7 @@ class CompleteUtterance(models.Model):
 	words = models.ManyToManyField(Word) # auto assign based on utterance
 	speaker = models.CharField(max_length=75) # db_index=True later?
 	translation = models.CharField(max_length=200, blank=True)
+	translation_source = models.CharField(max_length=75, blank=True)
 	context = models.TextField(blank=True)
 	source = models.CharField(max_length=200) # URL
 	def __str__(self):
