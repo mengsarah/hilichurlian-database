@@ -1,0 +1,20 @@
+{% extends "hilichurlian_database/base.html" %}
+{% load static %}
+
+{% block content %}
+<h2>Submit Data</h2>
+
+<form method="POST" action="{% url 'hilichurlian_database:add_data' %}">
+	{% csrf_token %}
+	<fieldset>
+		<legend>Data entry</legend>
+		{% for field in form %}
+			<div>{{ field.label_tag }} {{ field }}</div>
+		{% endfor %}
+		<input type="submit" value="Submit">
+	</fieldset>
+</form>
+
+<!-- show all data -->
+
+{% endblock %}
