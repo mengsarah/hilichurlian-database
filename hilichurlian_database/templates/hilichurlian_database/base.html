@@ -11,6 +11,15 @@
 	<link rel="stylesheet" type="text/css" href="{% static 'hilichurlian_database/style.css' %}">
 </head>
 <body>
+	{% if messages %}
+	<h2>Information</h2>
+	<ul class="messages">
+		{% for message in messages %}
+		<li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+		{% endfor %}
+	</ul>
+	{% endif %}
+
 	{% block content %}
 	{% endblock %}
 </body>
