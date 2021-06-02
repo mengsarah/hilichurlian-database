@@ -11,6 +11,10 @@
 	<link rel="stylesheet" type="text/css" href="{% static 'hilichurlian_database/style.css' %}">
 </head>
 <body>
+	{% block h1 %}
+	<h1>Hilichurlian Language Database</h1>
+	{% endblock %}
+
 	{% if messages %}
 	<h2>Information</h2>
 	<ul class="messages">
