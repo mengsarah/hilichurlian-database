@@ -3,6 +3,7 @@ from django.urls import path
 from . import views
 
 app_name = 'hilichurlian_database'
+# be careful to not overlap with _project/urls.py
 urlpatterns = [
 	path('', views.index, name='index'),
 	path('submit', views.data_entry, name='data_entry'),
