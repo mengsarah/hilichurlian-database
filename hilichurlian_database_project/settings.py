@@ -87,6 +87,8 @@ WSGI_APPLICATION = 'hilichurlian_database_project.wsgi.application'
 
 IS_LOCAL = (os.environ.get('LOCAL_WORK', 'False') == 'True')
 
+DATABASES = { 'default': {} }
+
 if IS_LOCAL:
 	DATABASES = {
 		'default': {
