@@ -34,7 +34,7 @@ DEBUG = (os.environ.get('DJANGO_DEBUG', 'False') == 'True')
 if DEBUG:
 	ALLOWED_HOSTS = []
 else:
-	ALLOWED_HOSTS = ['.hilichurlian-database.herokuapp.com']
+	ALLOWED_HOSTS = ['hilichurlian-database.herokuapp.com']
 
 
 # Application definition
