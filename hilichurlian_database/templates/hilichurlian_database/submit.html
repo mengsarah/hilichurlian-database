@@ -9,7 +9,10 @@
 	<fieldset>
 		<legend>Data entry</legend>
 		{% for field in form %}
-			<div>{{ field.label_tag }} {{ field }}</div>
+		<div>
+			<label class="field-label{% if field.field.required %} field-required{% endif %}" for="id_{{ field.name }}">{{ field.label }}</label>
+			{{ field }}
+		</div>
 		{% endfor %}
 		<input type="submit" value="Submit">
 	</fieldset>

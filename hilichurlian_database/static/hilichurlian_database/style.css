@@ -21,6 +21,14 @@ ul.messages li {
 	border-radius: 0.5rem;
 }
 
+.field-required {
+    font-weight: bold;
+}
+
+.field-required:after {
+    content: " (required)";
+}
+
 .success {
 	background-color: var(--light-green);
 	color: var(--dark-green);
