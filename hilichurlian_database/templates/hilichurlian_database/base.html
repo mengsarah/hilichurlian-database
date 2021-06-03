@@ -15,6 +15,11 @@
 	<h1>Hilichurlian Language Database</h1>
 	{% endblock %}
 
+	<nav>
+		<a href="{% url 'hilichurlian_database:index' %}">Main page</a>
+		<a href="{% url 'hilichurlian_database:data_entry' %}">Submit data</a>
+	</nav>
+
 	{% if messages %}
 	<h2>Information</h2>
 	<ul class="messages">
