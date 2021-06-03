@@ -18,7 +18,7 @@ def add_data(request):
 ### VIEWS FOR USERS ###
 
 def index(request):
-	return render(request, "hilichurlian_database/index.html")
+	return render(request, "hilichurlian_database/index.html", {'db': CompleteUtterance.objects.all()})
 
 # the /submit page
 def data_entry(request):

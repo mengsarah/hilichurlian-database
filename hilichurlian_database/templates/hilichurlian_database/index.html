@@ -2,8 +2,49 @@
 {% load static %}
 
 {% block content %}
-Coming soon
-
-<!-- show all data -->
+<table>
+	<tr>
+		<th class="cell-wide">
+			Sentence or phrase
+		</th>
+		<th class="cell-narrow">
+			Speaker
+		</th>
+		<th class="cell-wide">
+			Translation
+		</th>
+		<th class="cell-narrow">
+			Translation source
+		</th>
+		<th class="cell-wide">
+			Context
+		</th>
+		<th class="cell-narrow">
+			Source
+		</th>
+	</tr>
+	{% for utt in db %}
+	<tr>
+		<td>
+			{{utt.utterance}}
+		</td>
+		<td>
+			{{utt.speaker}}
+		</td>
+		<td>
+			{{utt.translation}}
+		</td>
+		<td>
+			{{utt.translation_source}}
+		</td>
+		<td class="scrollbox">
+			{{utt.context}}
+		</td>
+		<td>
+			<a href="{{utt.source}}">Source for {{utt.utterance}}</a>
+		</td>
+	</tr>
+	{% endfor %}
+</table>
 
 {% endblock %}

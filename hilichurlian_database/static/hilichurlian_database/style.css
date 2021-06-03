@@ -21,6 +21,32 @@ ul.messages li {
 	border-radius: 0.5rem;
 }
 
+nav {
+	text-align: center;
+}
+
+nav a {
+	display: inline-block;
+	width: 7rem;
+	text-align: center;
+}
+
+/* 3 of these */
+.cell-wide {
+	width: 20%;
+}
+
+/* 3 of these */
+.cell-narrow {
+	width: 10%;
+}
+
+.scrollbox {
+	overflow: auto;
+}
+
+/* ON SUBMIT PAGE */
+
 .form-field {
 	margin: 0.5rem auto;
 }
