@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+import dj_database_url
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -84,16 +85,21 @@ WSGI_APPLICATION = 'hilichurlian_database_project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-DATABASES = {
-	'default': {
-		'ENGINE': 'django.db.backends.postgresql',
-		'NAME': os.environ.get('POSTGRES_DB_NAME', 'mydatabase'),
-		'USER': os.environ.get('POSTGRES_USER', 'mysuperuser'),
-		'PASSWORD': os.environ.get('POSTGRES_PASS', 'mypassword'),
-		'HOST': os.environ.get('POSTGRES_HOST', '127.0.0.1'),
-		'PORT': os.environ.get('POSTGRES_POST', '5432'),
+IS_LOCAL = (os.environ.get('LOCAL_WORK', 'False') == 'True')
+
+if IS_LOCAL:
+	DATABASES = {
+		'default': {
+			'ENGINE': 'django.db.backends.postgresql',
+			'NAME': os.environ.get('POSTGRES_DB_NAME', 'mydatabase'),
+			'USER': os.environ.get('POSTGRES_USER', 'mysuperuser'),
+			'PASSWORD': os.environ.get('POSTGRES_PASS', 'mypassword'),
+			'HOST': os.environ.get('POSTGRES_HOST', '127.0.0.1'),
+			'PORT': os.environ.get('POSTGRES_POST', '5432'),
+		}
 	}
-}
+else:
+	DATABASES['default'] = dj_database_url.config(conn_max_age=600)
 
 
 # Password validation
