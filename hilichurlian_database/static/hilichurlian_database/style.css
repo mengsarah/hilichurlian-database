@@ -21,6 +21,21 @@ ul.messages li {
 	border-radius: 0.5rem;
 }
 
+.form-field {
+	margin: 0.5rem auto;
+}
+
+label {
+	display: inline-block;
+	text-align: center;
+	vertical-align: top;
+	min-width: 30%;
+}
+
+input[type="text"], textarea {
+	width: 65%;
+}
+
 .field-required {
     font-weight: bold;
 }
@@ -38,4 +53,25 @@ ul.messages li {
 .error {
 	background-color: var(--light-red);
 	color: var(--dark-red);
+}
+
+@media (max-width: 35rem) {
+	label {
+		display: block;
+		text-align: left;
+	}
+
+	input[type="text"], textarea {
+		width: 100%;
+	}
+}
+
+@media (min-width: 60rem) {
+	label {
+		min-width: 16%;
+	}
+
+	input[type="text"], textarea {
+		width: 70%;
+	}
 }
