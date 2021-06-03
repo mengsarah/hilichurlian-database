@@ -5,8 +5,21 @@
 	--light-red: lightcoral; /* #F08080 */
 }
 
+/* ALL PAGES */
+
 body {
 	background-color: #ddd;
+}
+
+.success {
+	background-color: var(--light-green);
+	color: var(--dark-green);
+	border-color: var(--dark-green);
+}
+
+.error {
+	background-color: var(--light-red);
+	color: var(--dark-red);
 }
 
 ul.messages {
@@ -30,6 +43,8 @@ nav a {
 	width: 7rem;
 	text-align: center;
 }
+
+/* ON MAIN PAGE */
 
 /* 3 of these */
 .cell-wide {
@@ -70,16 +85,7 @@ input[type="text"], textarea {
     content: " (required)";
 }
 
-.success {
-	background-color: var(--light-green);
-	color: var(--dark-green);
-	border-color: var(--dark-green);
-}
-
-.error {
-	background-color: var(--light-red);
-	color: var(--dark-red);
-}
+/* MEDIA QUERIES */
 
 @media (max-width: 35rem) {
 	label {
