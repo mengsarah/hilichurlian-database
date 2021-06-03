@@ -44,6 +44,19 @@ nav a {
 	text-align: center;
 }
 
+footer img, footer .text {
+	display: inline-block;
+	vertical-align: middle;
+}
+
+footer img {
+	max-width: 25%;
+}
+
+footer .text {
+	max-width: 70%;
+}
+
 /* ON MAIN PAGE */
 
 /* 3 of these */
@@ -87,6 +100,7 @@ input[type="text"], textarea {
 
 /* MEDIA QUERIES */
 
+/* small screens/large text */
 @media (max-width: 35rem) {
 	label {
 		display: block;
@@ -96,8 +110,13 @@ input[type="text"], textarea {
 	input[type="text"], textarea {
 		width: 100%;
 	}
+
+	footer img, footer .text {
+		max-width: 100%;
+	}
 }
 
+/* large screens/small text */
 @media (min-width: 60rem) {
 	label {
 		min-width: 16%;
