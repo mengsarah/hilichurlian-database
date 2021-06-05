@@ -2,13 +2,14 @@
 	--dark-green: darkgreen; /* #006400 */
 	--dark-red: darkred; /* #8B0000 */
 	--light-green: lightgreen; /* #90EE90 */
+	--light-gray: #ddd;
 	--light-red: lightcoral; /* #F08080 */
 }
 
 /* ALL PAGES */
 
 body {
-	background-color: #ddd;
+	background-color: var(--light-gray);
 }
 
 .success {
@@ -57,20 +58,36 @@ footer .text {
 	max-width: 70%;
 }
 
-/* ON MAIN PAGE */
+/* DATABASE TABLE */
 
-/* 3 of these */
+table, th, td {
+	border: 1px solid black;
+}
+
+table {
+	background: black;
+}
+
+th, td {
+	background-color: var(--light-gray);
+	padding: 0.4rem;
+}
+
+/* 3 of these per row */
 .cell-wide {
 	width: 20%;
 }
 
-/* 3 of these */
+/* 3 of these per row */
 .cell-narrow {
 	width: 10%;
 }
 
-.scrollbox {
+/* 1 per row (context); class for <div> within <td>;
+ * doesn't work as a class for <td> on Firefox */
+.long-text {
 	overflow: auto;
+	max-height: 4rem;
 }
 
 /* ON SUBMIT PAGE */

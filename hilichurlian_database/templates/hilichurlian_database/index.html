@@ -25,24 +25,24 @@
 	</tr>
 	{% for utt in db %}
 	<tr>
-		<td>
+		<td><div class="long-text">
 			{{utt.utterance}}
-		</td>
+		</div></td>
 		<td>
 			{{utt.speaker}}
 		</td>
-		<td>
+		<td><div class="long-text">
 			{{utt.translation}}
-		</td>
+		</div></td>
 		<td>
 			{{utt.translation_source}}
 		</td>
-		<td class="scrollbox">
+		<td><div class="long-text">
 			{{utt.context}}
-		</td>
-		<td>
+		</div></td>
+		<td><div class="long-text">
 			<a href="{{utt.source}}">Source for {{utt.utterance}}</a>
-		</td>
+		</div></td>
 	</tr>
 	{% endfor %}
 </table>
