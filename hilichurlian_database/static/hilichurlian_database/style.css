@@ -1,8 +1,11 @@
 :root {
 	--dark-green: darkgreen; /* #006400 */
+	--dark-gray: #333;
 	--dark-red: darkred; /* #8B0000 */
+	--gray: #ccc;
 	--light-green: lightgreen; /* #90EE90 */
 	--light-gray: #ddd;
+	--lighter-gray: #eee;
 	--light-red: lightcoral; /* #F08080 */
 }
 
@@ -71,6 +74,19 @@ table {
 th, td {
 	background-color: var(--light-gray);
 	padding: 0.4rem;
+}
+
+th {
+	background-color: var(--dark-gray);
+	color: white;
+}
+
+tr.row-light td {
+	background-color: var(--gray);
+}
+
+tr.row-lighter td {
+	background-color: var(--lighter-gray);
 }
 
 /* 3 of these per row */

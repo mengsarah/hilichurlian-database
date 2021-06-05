@@ -24,7 +24,7 @@
 		</th>
 	</tr>
 	{% for utt in db %}
-	<tr>
+	<tr class="row-{% cycle 'light' 'lighter' %}">
 		<td><div class="long-text">
 			{{utt.utterance}}
 		</div></td>
