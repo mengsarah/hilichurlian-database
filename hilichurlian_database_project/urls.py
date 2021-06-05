@@ -15,8 +15,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+ADMIN_LOCATION = os.environ.get('DJANGO_ADMIN_LOCATION', 'admin/')
 
 urlpatterns = [
-	path('admin/', admin.site.urls),
+	path(ADMIN_LOCATION, admin.site.urls),
 	path('', include('hilichurlian_database.urls')),
 ]
