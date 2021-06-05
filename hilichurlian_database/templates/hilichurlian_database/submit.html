@@ -4,6 +4,16 @@
 {% block content %}
 <h2>Submit Data</h2>
 
+<div class="information">
+	<p>Please note the following:</p>
+	<ul>
+		<li>All information, including translation information, must be taken directly from the game or other official material.<br /><strong>No guesses, no matter how good they are.</strong></li>
+		<li>An "<strong>utterance</strong>" is basically a sentence, including sentence fragments and otherwise not grammatical sentences. Utterances can technically be phrases as well, but phrases that aren't in sentences are rarely found in the wild.</li>
+		<li><strong>Translations</strong> that are given indirectly (e.g. "It said that its friend knows") may be rephrased to become direct translations with brackets around the words that were changed (e.g. "[My] friend knows").</li>
+		<li><strong>Translation sources</strong> are people or written material such as books.</li>
+	</ul>
+</div>
+
 <form method="POST" action="{% url 'hilichurlian_database:add_data' %}">
 	{% csrf_token %}
 	<fieldset>
