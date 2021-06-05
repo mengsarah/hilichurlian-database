@@ -43,3 +43,6 @@ def data_entry(request):
 	# blank form
 	submit_form = CompleteUtteranceForm()
 	return render(request, "hilichurlian_database/submit.html", {'form': submit_form})
+
+def about(request):
+	return render(request, "hilichurlian_database/about.html")
