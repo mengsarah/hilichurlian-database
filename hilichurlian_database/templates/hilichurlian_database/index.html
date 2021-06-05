@@ -1,5 +1,6 @@
 {% extends "hilichurlian_database/base.html" %}
 {% load static %}
+{% load describe_url %}
 
 {% block content %}
 <table>
@@ -41,7 +42,7 @@
 			{{utt.context}}
 		</div></td>
 		<td><div class="long-text">
-			<a href="{{utt.source}}">Source for {{utt.utterance}}</a>
+			<a href="{{utt.source}}">{{utt.source|describe_url}}</a>
 		</div></td>
 	</tr>
 	{% endfor %}
