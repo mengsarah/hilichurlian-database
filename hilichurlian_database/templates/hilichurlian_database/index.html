@@ -10,6 +10,11 @@
 	<p>More features are on the way!</p>
 </div>
 
+<form id="search" action="{% url 'hilichurlian_database:filter_strict' %}">
+	<input type="text" placeholder="Search for a specific word" name="search">
+	<button type="submit">Search</button>
+</form>
+
 <table>
 	<tr>
 		<th class="cell-wide">

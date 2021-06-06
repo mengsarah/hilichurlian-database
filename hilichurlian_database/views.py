@@ -38,6 +38,19 @@ def add_data(request):
 def index(request):
 	return render(request, "hilichurlian_database/index.html", {'db': CompleteUtterance.objects.all()})
 
+def filter_strict(request):
+	utterances = None
+	req = request.GET
+	if request.method == 'GET' and 'search' in req:
+		utterances = CompleteUtterance.objects.filter(words=req['search'])
+		if not utterances.exists():
+			utterances = CompleteUtterance.objects.all()
+			messages.error(request, "No utterances found for " + req['search'] + ". Try another word.")
+	else:
+		utterances = CompleteUtterance.objects.all()
+		messages.error(request, "No data received")
+	return render(request, "hilichurlian_database/index.html", {'db': utterances})
+
 # the /submit page
 def data_entry(request):
 	# blank form
