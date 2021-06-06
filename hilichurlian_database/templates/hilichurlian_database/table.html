@@ -1,0 +1,55 @@
+{% load describe_url %}
+
+<form id="search" action="{% url 'hilichurlian_database:filter_strict' %}">
+	<input type="text" placeholder="Search for a specific word" name="search">
+	<button type="submit">Search</button>
+</form>
+
+<!-- pagination (match pagination at bottom) -->
+
+<table>
+	<tr>
+		<th class="cell-wide">
+			Sentence or phrase
+		</th>
+		<th class="cell-narrow">
+			Speaker
+		</th>
+		<th class="cell-wide">
+			Translation
+		</th>
+		<th class="cell-narrow">
+			Translation source
+		</th>
+		<th class="cell-wide">
+			Context
+		</th>
+		<th class="cell-narrow">
+			Source
+		</th>
+	</tr>
+	{% for utt in db %}
+	<tr class="row-{% cycle 'light' 'lighter' %}">
+		<td><div class="long-text">
+			{{utt.utterance}}
+		</div></td>
+		<td>
+			{{utt.speaker}}
+		</td>
+		<td><div class="long-text">
+			{{utt.translation}}
+		</div></td>
+		<td>
+			{{utt.translation_source}}
+		</td>
+		<td><div class="long-text">
+			{{utt.context}}
+		</div></td>
+		<td><div class="long-text">
+			<a href="{{utt.source}}">{{utt.source|describe_url}}</a>
+		</div></td>
+	</tr>
+	{% endfor %}
+</table>
+
+<!-- pagination (match pagination at top) -->
