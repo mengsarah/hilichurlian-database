@@ -46,13 +46,17 @@ def filter_strict(request):
 	utterances = None
 	req = request.GET
 	if request.method == 'GET' and 'search' in req:
-		word = req['search']
-		utterances = CompleteUtterance.objects.filter(words=word)
-		if not utterances.exists():
+		word = req['search'].strip()
+		if len(word) == 0:
 			utterances = CompleteUtterance.objects.all()
-			messages.error(request, "No utterances found for " + word + ". Try another word.")
+			messages.error(request, "Please enter a word to search.")
 		else:
-			messages.success(request, "Found results for " + word + ".")
+			utterances = CompleteUtterance.objects.filter(words=word)
+			if not utterances.exists():
+				utterances = CompleteUtterance.objects.all()
+				messages.error(request, "No utterances found for " + word + ". Try another word.")
+			else:
+				messages.success(request, "Found results for " + word + ".")
 	else:
 		utterances = CompleteUtterance.objects.all()
 		messages.error(request, "No data received")
