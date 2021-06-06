@@ -51,6 +51,8 @@ def filter_strict(request):
 		if not utterances.exists():
 			utterances = CompleteUtterance.objects.all()
 			messages.error(request, "No utterances found for " + word + ". Try another word.")
+		else:
+			messages.success(request, "Found results for " + word + ".")
 	else:
 		utterances = CompleteUtterance.objects.all()
 		messages.error(request, "No data received")
