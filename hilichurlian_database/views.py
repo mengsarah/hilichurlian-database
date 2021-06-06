@@ -46,10 +46,11 @@ def filter_strict(request):
 	utterances = None
 	req = request.GET
 	if request.method == 'GET' and 'search' in req:
-		utterances = CompleteUtterance.objects.filter(words=req['search'])
+		word = req['search']
+		utterances = CompleteUtterance.objects.filter(words=word)
 		if not utterances.exists():
 			utterances = CompleteUtterance.objects.all()
-			messages.error(request, "No utterances found for " + req['search'] + ". Try another word.")
+			messages.error(request, "No utterances found for " + word + ". Try another word.")
 	else:
 		utterances = CompleteUtterance.objects.all()
 		messages.error(request, "No data received")
