@@ -7,6 +7,7 @@ app_name = 'hilichurlian_database'
 urlpatterns = [
 	path('', views.index, name='index'),
 	path('about', views.about, name='about'),
+	path('filter', views.filter_strict, name='filter_strict'),
 	path('submit', views.data_entry, name='data_entry'),
 	# for POST
 	path('add_data', views.add_data, name='add_data'),
