@@ -53,7 +53,7 @@ def filter_strict(request):
 	else:
 		utterances = CompleteUtterance.objects.all()
 		messages.error(request, "No data received")
-	return render(request, "hilichurlian_database/index.html", {'db': utterances})
+	return render(request, "hilichurlian_database/results.html", {'db': utterances})
 
 # the /submit page
 def data_entry(request):
