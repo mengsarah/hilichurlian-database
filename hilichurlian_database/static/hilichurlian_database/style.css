@@ -20,9 +20,7 @@ body {
 .information {
 	background-color: var(--light-blue);
 	color: var(--dark-blue);
-	border: 0.2rem solid var(--dark-blue);
-	padding: 0.5rem 1rem;
-	border-radius: 0.5rem;
+	border-color: var(--dark-blue);
 }
 
 .success {
@@ -37,12 +35,12 @@ body {
 	border-color: var(--dark-red);
 }
 
-ul.messages {
+ul.messages, div.messages {
 	padding-left: 0;
 	margin: 0.5rem;
 }
 
-ul.messages li {
+ul.messages li, div.messages {
 	list-style: none;
 	padding: 0.5rem 1rem;
 	border: 0.2rem solid;
