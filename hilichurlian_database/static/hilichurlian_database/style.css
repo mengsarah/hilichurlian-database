@@ -154,11 +154,11 @@ input[type="text"], textarea {
 }
 
 .field-required {
-    font-weight: bold;
+	font-weight: bold;
 }
 
 .field-required:after {
-    content: " (required)";
+	content: " (required)";
 }
 
 /* MEDIA QUERIES */
