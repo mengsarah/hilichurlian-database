@@ -47,6 +47,8 @@ def index(request):
 	render_page = "hilichurlian_database/index.html"
 	page = req.get('page', 1)
 	page_size = req.get('pageSize', DEFAULT_PAGE_SIZE)
+	if int(page_size) < 1:
+		page_size = 1
 	if int(page) > 1:
 		# go away, big home page blurb
 		render_page = "hilichurlian_database/results.html"
@@ -66,6 +68,8 @@ def filter_strict(request, word=""):
 	utterances = None # to be updated
 	page = req.get('page', 1)
 	page_size = req.get('pageSize', DEFAULT_PAGE_SIZE)
+	if int(page_size) < 1:
+		page_size = 1
 	# get utterances from word; check URL for word first
 	if len(word) > 0:
 		utterances = CompleteUtterance.objects.filter(words=word)
