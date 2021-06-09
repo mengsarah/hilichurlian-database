@@ -5,7 +5,7 @@
 	<button type="submit">Search</button>
 </form>
 
-<!-- pagination (match pagination at bottom) -->
+{% include "hilichurlian_database/elements/pagination.html" %}
 
 <table>
 	<tr>
@@ -28,7 +28,7 @@
 			Source
 		</th>
 	</tr>
-	{% for utt in db %}
+	{% for utt in db_page %}
 	<tr class="row-{% cycle 'light' 'lighter' %}">
 		<td><div class="long-text">
 			{{utt.utterance}}
@@ -49,7 +49,9 @@
 			<a href="{{utt.source}}">{{utt.source|describe_url}}</a>
 		</div></td>
 	</tr>
+	{% empty %}
+	<tr class="row-light"><td colspan="6">No results</td></tr>
 	{% endfor %}
 </table>
 
-<!-- pagination (match pagination at top) -->
+{% include "hilichurlian_database/elements/pagination.html" %}

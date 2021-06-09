@@ -70,6 +70,27 @@ footer .text {
 	max-width: 70%;
 }
 
+/* DATABASE TABLE NAV */
+
+nav.pagination a {
+	display: inline-block;
+	text-align: center;
+	margin: 0;
+	padding: 0.5rem 1rem;
+	width: auto;
+}
+
+a.pagination-page {
+	background-color: var(--lighter-gray);
+	border: 1px solid var(--dark-gray);
+}
+
+#current-page {
+	background-color: var(--dark-gray);
+	border-color: var(--light-gray);
+	color: var(--light-gray)
+}
+
 /* DATABASE TABLE */
 
 table, th, td {
