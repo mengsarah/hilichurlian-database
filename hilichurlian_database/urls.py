@@ -7,7 +7,6 @@ app_name = 'hilichurlian_database'
 urlpatterns = [
 	path('', views.index, name='index'),
 	path('view', views.index, name='view'),
-	path('view/<int:page>', views.index, name='view'),
 	path('about', views.about, name='about'),
 	path('filter', views.filter_strict, name='filter_strict'),
 	path('filter/<slug:word>', views.filter_strict, name='filter_strict'),

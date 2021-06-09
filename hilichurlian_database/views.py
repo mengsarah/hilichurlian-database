@@ -41,17 +41,19 @@ def add_data(request):
 
 ### VIEWS FOR USERS ###
 
-def index(request, page=1):
+def index(request):
+	req = request.GET
+	# initialize parameters
 	render_page = "hilichurlian_database/index.html"
-	page_size = DEFAULT_PAGE_SIZE
-	if request.method == 'GET' and page > 1:
+	page = req.get('page', 1)
+	page_size = req.get('pageSize', DEFAULT_PAGE_SIZE)
+	if int(page) > 1:
+		# go away, big home page blurb
 		render_page = "hilichurlian_database/results.html"
-	page_size = request.GET.get('pageSize', DEFAULT_PAGE_SIZE)
 	paging = Paginator(CompleteUtterance.objects.all(), page_size)
 	return render(request, render_page, {
 		'db_page': paging.get_page(page),
 		'page_range': paging.page_range,
-		'current_page': page,
 		'page_size': page_size,
 	})
 
@@ -85,8 +87,8 @@ def filter_strict(request, word=""):
 	return render(request, "hilichurlian_database/results.html", {
 		'db_page': paging.get_page(page),
 		'page_range': paging.page_range,
-		'word': word,
 		'page_size': page_size,
+		'word': word,
 	})
 
 # the /submit page
