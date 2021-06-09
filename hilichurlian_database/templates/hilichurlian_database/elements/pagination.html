@@ -1,11 +1,11 @@
 <nav class="pagination" aria-label="pagination">
 {% if db_page.has_previous %}
-	<a href="{% url 'hilichurlian_database:view' db_page.previous_page_number %}?pageSize={{page_size}}">Previous page</a>
+	<a href="{% if word %}{% url 'hilichurlian_database:filter_strict' word %}{% endif %}?page={{db_page.previous_page_number}}&pageSize={{page_size}}">Previous page</a>
 {% endif %}
 {% for page_num in page_range %}
-	<a href="{% url 'hilichurlian_database:view' page_num %}?pageSize={{page_size}}" class="pagination-page" {% if page_num == current_page %} id="current-page" aria-current="page" {% endif %}>{{page_num}}</a>
+	<a href="{% if word %}{% url 'hilichurlian_database:filter_strict' word %}{% endif %}?page={{page_num}}&pageSize={{page_size}}" class="pagination-page" {% if page_num == db_page.number %} id="current-page" aria-current="page" {% endif %}>{{page_num}}</a>
 {% endfor %}
 {% if db_page.has_next %}
-	<a href="{% url 'hilichurlian_database:view' db_page.next_page_number %}?pageSize={{page_size}}">Next page</a>
+	<a href="{% if word %}{% url 'hilichurlian_database:filter_strict' word %}{% endif %}?page={{db_page.next_page_number}}&pageSize={{page_size}}">Next page</a>
 {% endif %}
 </nav>
