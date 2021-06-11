@@ -72,7 +72,7 @@ footer .text {
 
 /* DATABASE TABLE NAV */
 
-nav.pagination a {
+nav.pagination a, nav.pagination span {
 	display: inline-block;
 	text-align: center;
 	margin: 0;

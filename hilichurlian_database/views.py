@@ -55,7 +55,7 @@ def index(request):
 	paging = Paginator(CompleteUtterance.objects.order_by('source', 'id'), page_size)
 	return render(request, render_page, {
 		'db_page': paging.get_page(page),
-		'page_range': paging.page_range,
+		'page_range': paging.get_elided_page_range(page, on_each_side=2, on_ends=3),
 		'page_size': page_size,
 	})
 
@@ -87,7 +87,7 @@ def filter_strict(request, word=""):
 	paging = Paginator(utterances.order_by('source', 'id'), page_size)
 	return render(request, "hilichurlian_database/results.html", {
 		'db_page': paging.get_page(page),
-		'page_range': paging.page_range,
+		'page_range': paging.get_elided_page_range(page, on_ends=3),
 		'page_size': page_size,
 		'word': word,
 	})
