@@ -70,7 +70,15 @@ footer .text {
 	max-width: 70%;
 }
 
+form {
+	margin: 0.5rem auto;
+}
+
 /* DATABASE TABLE NAV */
+
+.pagination {
+	margin: 1rem auto;
+}
 
 nav.pagination a, nav.pagination span {
 	display: inline-block;
@@ -149,7 +157,7 @@ label {
 	min-width: 30%;
 }
 
-input[type="text"], textarea {
+#submit-form input[type="text"], #submit-form textarea {
 	width: 65%;
 }
 

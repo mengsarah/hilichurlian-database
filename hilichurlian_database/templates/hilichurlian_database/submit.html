@@ -20,7 +20,7 @@
 	<p>I trust that you all will not abuse this submission form!</p>
 </div>
 
-<form method="POST" action="{% url 'hilichurlian_database:add_data' %}">
+<form method="POST" action="{% url 'hilichurlian_database:add_data' %}" id="submit-form">
 	{% csrf_token %}
 	<fieldset>
 		<legend>Data entry</legend>

@@ -1,8 +1,15 @@
 {% load describe_url %}
 
-<form id="search" action="{% url 'hilichurlian_database:filter_strict' %}">
-	<input type="text" placeholder="Search for a specific word" name="search">
+<form id="search" method="GET" action="{% url 'hilichurlian_database:filter_strict' %}">
+	<label for="search-field">Search for a specific word:</label>
+	<input type="text" name="search" id="search-field">
 	<button type="submit">Search</button>
+</form>
+
+<form id="page-size" method="GET" action="{% if word %}{% url 'hilichurlian_database:filter_strict' word %}{% else %}{% url 'hilichurlian_database:view' %}{% endif %}">
+	<label for="custom-page-size">Number of data rows per page:</label>
+	<input type="text" name="pageSize" id="custom-page-size">
+	<button type="submit">Change page size</button>
 </form>
 
 {% include "hilichurlian_database/elements/pagination.html" %}
