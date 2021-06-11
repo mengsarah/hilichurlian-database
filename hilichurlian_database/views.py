@@ -59,9 +59,6 @@ def index(request):
 		'page_size': page_size,
 	})
 
-def about(request):
-	return render(request, "hilichurlian_database/about.html")
-
 def filter_strict(request, word=""):
 	req = request.GET
 	# initialize parameters
@@ -94,6 +91,9 @@ def filter_strict(request, word=""):
 		'page_size': page_size,
 		'word': word,
 	})
+
+def about(request):
+	return render(request, "hilichurlian_database/about.html")
 
 # the /submit page
 def data_entry(request):
