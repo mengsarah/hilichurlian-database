@@ -52,7 +52,7 @@ def index(request):
 	if int(page) > 1:
 		# go away, big home page blurb
 		render_page = "hilichurlian_database/results.html"
-	paging = Paginator(CompleteUtterance.objects.all(), page_size)
+	paging = Paginator(CompleteUtterance.objects.order_by('source', 'id'), page_size)
 	return render(request, render_page, {
 		'db_page': paging.get_page(page),
 		'page_range': paging.page_range,
@@ -87,7 +87,7 @@ def filter_strict(request, word=""):
 		messages.success(request, "Found results for " + word + ".")
 	# else utterance.exists() is True and word was from URL, not the search field
 	# so no message
-	paging = Paginator(utterances, page_size)
+	paging = Paginator(utterances.order_by('source', 'id'), page_size)
 	return render(request, "hilichurlian_database/results.html", {
 		'db_page': paging.get_page(page),
 		'page_range': paging.page_range,
