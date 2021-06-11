@@ -10,7 +10,8 @@ urlpatterns = [
 	path('about', views.about, name='about'),
 	path('filter', views.filter_strict, name='filter_strict'),
 	path('filter/<slug:word>', views.filter_strict, name='filter_strict'),
-	path('submit', views.data_entry, name='data_entry'),
 	# for POST
 	path('add_data', views.add_data, name='add_data'),
+	# submit page is only ever temporarily up
+	# path('submit', views.data_entry, name='data_entry'),
 ]
