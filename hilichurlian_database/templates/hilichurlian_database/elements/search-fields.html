@@ -1,0 +1,18 @@
+<form id="search-form" class="long-form" method="GET" action="{% url 'hilichurlian_database:filter_strict' %}">
+<fieldset>
+	<legend>Search for specific entries (fields may be left blank):</legend>
+	<div class="form-field">
+		<label for="searchWords">Hilichurlian words</label>
+		<input type="text" id="search-words" name="searchWords" value="{{criteria.words|default:''}}" />
+	</div>
+	<div class="form-field">
+		<label for="searchSpeaker">Speaker</label>
+		<input type="text" id="search-speaker" name="searchSpeaker" value="{{criteria.speaker|default:''}}"" />
+	</div>
+	<div class="form-field">
+		<label for="searchSource">Source</label>
+		<input type="text" id="search-source" name="searchSource" value="{{criteria.source|default:''}}" />
+	</div>
+	<button type="submit" value="search">Search</button>
+</fieldset>
+</form>

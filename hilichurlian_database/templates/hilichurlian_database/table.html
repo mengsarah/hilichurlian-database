@@ -1,14 +1,13 @@
 {% load describe_url %}
 
-<form id="search" method="GET" action="{% url 'hilichurlian_database:filter_strict' %}">
-	<label for="search-field">Search for a specific word:</label>
-	<input type="text" name="search" id="search-field">
-	<button type="submit">Search</button>
-</form>
+{% include "hilichurlian_database/elements/search-fields.html" %}
 
-<form id="page-size" method="GET" action="{% if word %}{% url 'hilichurlian_database:filter_strict' word %}{% else %}{% url 'hilichurlian_database:view' %}{% endif %}">
-	<label for="custom-page-size">Number of data rows per page:</label>
-	<input type="text" name="pageSize" id="custom-page-size">
+<form id="page-size" method="GET" action="{% if criteria %}{% url 'hilichurlian_database:filter_strict' %}{% else %}{% url 'hilichurlian_database:view' %}{% endif %}">
+	{% for criterion, value in criteria.items %}
+		<input type="hidden" name="search{{criterion|capfirst}}" value="{{value|default:''}}" />
+	{% endfor %}
+	<label for="custom-page-size">Number of entries per page:</label>
+	<input type="text" name="pageSize" id="custom-page-size" />
 	<button type="submit">Change page size</button>
 </form>
 

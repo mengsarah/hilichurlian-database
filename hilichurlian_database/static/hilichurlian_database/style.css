@@ -144,21 +144,30 @@ tr.row-lighter td {
 	max-height: 4rem;
 }
 
-/* ON SUBMIT PAGE */
+/* FORMS */
 
-.form-field {
+.long-form .form-field {
 	margin: 0.5rem auto;
 }
 
-label {
+.long-form label {
 	display: inline-block;
 	text-align: center;
 	vertical-align: top;
 	min-width: 30%;
 }
 
-#submit-form input[type="text"], #submit-form textarea {
+.long-form input[type="text"], .long-form textarea {
 	width: 65%;
+}
+
+.long-form .radio-choice {
+	display: inline-block;
+	margin: auto 1rem;
+}
+
+#search-form label {
+	min-width: 20%;
 }
 
 .field-required {
@@ -173,12 +182,12 @@ label {
 
 /* small screens/large text */
 @media (max-width: 35rem) {
-	label {
+	.long-form label, #search-form label {
 		display: block;
 		text-align: left;
 	}
 
-	input[type="text"], textarea {
+	.long-form input[type="text"], .long-form textarea {
 		width: 100%;
 	}
 
@@ -189,11 +198,11 @@ label {
 
 /* large screens/small text */
 @media (min-width: 60rem) {
-	label {
+	.long-form label, #search-form label {
 		min-width: 16%;
 	}
 
-	input[type="text"], textarea {
+	.long-form input[type="text"], .long-form textarea {
 		width: 70%;
 	}
 }

@@ -1,3 +1,4 @@
+from django.db.models import Q
 from django.shortcuts import render, redirect
 from django.core.paginator import Paginator
 from django.contrib import messages
@@ -60,38 +61,51 @@ def index(request):
 		'page_size': page_size,
 	})
 
-def filter_strict(request, word=""):
+# for searching
+def filter_strict(request):
 	req = request.GET
-	# initialize parameters
-	utterances = None # to be updated
+	# initialize general parameters
+	utterances = CompleteUtterance.objects.all() # to be updated
 	page = req.get('page', 1)
 	page_size = req.get('pageSize', DEFAULT_PAGE_SIZE)
 	if int(page_size) < 1:
 		page_size = 1
-	# get utterances from word; check URL for word first
-	if len(word) > 0:
-		utterances = CompleteUtterance.objects.filter(words=word)
-	elif 'search' in req:
-		word = req['search']
-		utterances = CompleteUtterance.objects.filter(words=word)
-	else:
+	# initialize search parameters:
+	# text from user: searchWords (multiple), searchSpeaker (1), searchSource (1)
+	# and searchSet is either searchAll (default) or searchSubset
+	words_as_string = req.get('searchWords', "").strip()
+	words_list = re.findall(r'\w+', words_as_string.lower()) # like in add_data()
+	speaker = req.get('searchSpeaker', "").strip()
+	source = req.get('searchSource', "").strip()
+	search_set = req.get('searchSet', "all")
+	# get utterances within search_set that match speaker and source
+	if speaker != "":
+		utterances = utterances.filter(speaker=speaker)
+	if source != "":
+		utterances = utterances.filter(source=source)
+	# now that the set is smaller, get utterances that have all of the words
+	for w in words_list:
+		utterances = utterances.filter(words=w)
+	# add success/fail message
+	if len(words_as_string) == 0:
 		utterances = CompleteUtterance.objects.all()
 		messages.error(request, "Please enter a word to search.")
-	# add message and update utterances if applicable
-	if not utterances.exists():
+	elif not utterances.exists():
 		utterances = CompleteUtterance.objects.all()
-		messages.error(request, "No utterances found for " + word + ". Try another word.")
-	elif 'search' in req: # utterances.exists() is True
-		messages.success(request, "Found results for " + word + ".")
-	# else utterance.exists() is True and word was from URL, not the search field
-	# so no message
+		messages.error(request, "No utterances found for " + words_as_string + ". Try another word.")
+	else: # utterances.exists() is True
+		messages.success(request, "Found results for " + words_as_string + ".")
 	paging = Paginator(utterances.order_by('source', 'id'), page_size)
 	return render(request, "hilichurlian_database/results.html", {
 		'db_page': paging.get_page(page),
 		'page_range': paging.get_elided_page_range(page, on_each_side=2, on_ends=3),
 		'page_range2': paging.get_elided_page_range(page, on_each_side=2, on_ends=3),
 		'page_size': page_size,
-		'word': word,
+		'criteria': {
+			'words': words_as_string,
+			'speaker': speaker,
+			'source': source,
+		},
 	})
 
 def about(request):
