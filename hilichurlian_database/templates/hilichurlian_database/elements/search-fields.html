@@ -1,6 +1,7 @@
 <form id="search-form" class="long-form" method="GET" action="{% url 'hilichurlian_database:filter_strict' %}">
 <fieldset>
 	<legend>Search for specific entries (fields may be left blank):</legend>
+	<input type="hidden" name="newSearch" value="yes" />
 	<div class="form-field">
 		<label for="searchWords">Hilichurlian words</label>
 		<input type="text" id="search-words" name="searchWords" value="{{criteria.words|default:''}}" />

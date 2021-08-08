@@ -14,6 +14,19 @@ CompleteUtteranceForm = modelform_factory(CompleteUtterance, fields=['utterance'
 ### GLOBAL CONSTANTS ###
 DEFAULT_PAGE_SIZE = 10
 
+### HELPER FUNCTIONS ###
+
+def make_criteria_message(words_as_string, words_list, speaker, source):
+	criteria = []
+	if len(words_list) > 0:
+		criteria.append(words_as_string)
+	if len(speaker) > 0:
+		criteria.append(speaker)
+	if len(source) > 0:
+		criteria.append(source)
+	return str(criteria)[1:-1]
+
+
 ### VIEWS FOR POST ###
 
 def add_data(request):
@@ -59,6 +72,11 @@ def index(request):
 		'page_range': paging.get_elided_page_range(page, on_each_side=2, on_ends=3),
 		'page_range2': paging.get_elided_page_range(page, on_each_side=2, on_ends=3),
 		'page_size': page_size,
+		'criteria': {
+			'words': "",
+			'speaker': "",
+			'source': "",
+		},
 	})
 
 # for searching
@@ -86,15 +104,20 @@ def filter_strict(request):
 	# now that the set is smaller, get utterances that have all of the words
 	for w in words_list:
 		utterances = utterances.filter(words=w)
-	# add success/fail message
-	if len(words_as_string) == 0 and len(speaker) == 0 and len(source) == 0:
+	# add success/fail message if this is a new search (rather than pagination)
+	if req.get('newSearch', "no") == "yes":
+		criteria_message = make_criteria_message(words_as_string, words_list, speaker, source)
+	if len(words_list) == 0 and len(speaker) == 0 and len(source) == 0:
 		utterances = CompleteUtterance.objects.all()
-		messages.error(request, "Please enter a word, speaker, or source to search.")
+		if req.get('newSearch', "no") == "yes":
+			messages.error(request, "Please enter a word, speaker, or source to search.")
 	elif not utterances.exists():
 		utterances = CompleteUtterance.objects.all()
-		messages.error(request, "No utterances found for " + words_as_string + ". Try another word.")
+		if req.get('newSearch', "no") == "yes":
+			messages.error(request, "No utterances found that satisfy all of the following criteria: " + criteria_message)
 	else: # utterances.exists() is True
-		messages.success(request, "Found results for " + words_as_string + ".")
+		if req.get('newSearch', "no") == "yes":
+			messages.success(request, "Successfully found utterances that satisfy all of the following criteria: " + criteria_message)
 	paging = Paginator(utterances.order_by('source', 'id'), page_size)
 	return render(request, "hilichurlian_database/results.html", {
 		'db_page': paging.get_page(page),

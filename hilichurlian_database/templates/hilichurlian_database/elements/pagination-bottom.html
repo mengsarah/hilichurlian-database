@@ -1,17 +1,19 @@
+{% with "&searchWords="|add:criteria.words|add:"&searchSpeaker="|add:criteria.speaker|add:"&searchSource="|add:criteria.source|add:"&pageSize="|add:page_size as existing %}
 <nav class="pagination" aria-label="pagination">
 {% if db_page.has_previous %}
-	<a href="{% if word %}{% url 'hilichurlian_database:filter_strict' word %}{% endif %}?page={{db_page.previous_page_number}}&pageSize={{page_size}}">Previous page</a>
+	<a href="?page={{db_page.previous_page_number}}{{existing}}">Previous page</a>
 {% endif %}
 {% for page_num in page_range2 %}
 	{% if page_num == "…" %}
 	<span>…</span>
 	{% else %}
-	<a href="{% if word %}{% url 'hilichurlian_database:filter_strict' word %}{% endif %}?page={{page_num}}&pageSize={{page_size}}" class="pagination-page" {% if page_num == db_page.number %} id="current-page" aria-current="page" {% endif %}>
+	<a href="?page={{page_num}}{{existing}}" class="pagination-page" {% if page_num == db_page.number %} id="current-page" aria-current="page" {% endif %}>
 		{{page_num}}
 	</a>
 	{% endif %}
 {% endfor %}
 {% if db_page.has_next %}
-	<a href="{% if word %}{% url 'hilichurlian_database:filter_strict' word %}{% endif %}?page={{db_page.next_page_number}}&pageSize={{page_size}}">Next page</a>
+	<a href="?page={{db_page.next_page_number}}{{existing}}">Next page</a>
 {% endif %}
 </nav>
+{% endwith %}
