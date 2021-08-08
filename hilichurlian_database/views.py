@@ -87,9 +87,9 @@ def filter_strict(request):
 	for w in words_list:
 		utterances = utterances.filter(words=w)
 	# add success/fail message
-	if len(words_as_string) == 0:
+	if len(words_as_string) == 0 and len(speaker) == 0 and len(source) == 0:
 		utterances = CompleteUtterance.objects.all()
-		messages.error(request, "Please enter a word to search.")
+		messages.error(request, "Please enter a word, speaker, or source to search.")
 	elif not utterances.exists():
 		utterances = CompleteUtterance.objects.all()
 		messages.error(request, "No utterances found for " + words_as_string + ". Try another word.")
