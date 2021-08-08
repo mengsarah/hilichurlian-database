@@ -1,4 +1,4 @@
-{% with "&searchWords="|add:criteria.words|add:"&searchSpeaker="|add:criteria.speaker|add:"&searchSource="|add:criteria.source|add:"&pageSize="|add:page_size as existing %}
+{% with "&words="|add:criteria.words|add:"&speaker="|add:criteria.speaker|add:"&source="|add:criteria.source|add:"&pageSize="|add:page_size as existing %}
 <nav class="pagination" aria-label="pagination">
 {% if db_page.has_previous %}
 	<a href="?page={{db_page.previous_page_number}}{{existing}}">Previous page</a>

@@ -4,7 +4,7 @@
 
 <form id="page-size" method="GET" action="{% if criteria %}{% url 'hilichurlian_database:filter_strict' %}{% else %}{% url 'hilichurlian_database:view' %}{% endif %}">
 	{% for criterion, value in criteria.items %}
-		<input type="hidden" name="search{{criterion|capfirst}}" value="{{value|default:''}}" />
+		<input type="hidden" name="{{criterion}}" value="{{value|default:''}}" />
 	{% endfor %}
 	<label for="custom-page-size">Number of entries per page:</label>
 	<input type="text" name="pageSize" id="custom-page-size" />

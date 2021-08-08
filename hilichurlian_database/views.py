@@ -91,11 +91,11 @@ def filter_strict(request):
 	# initialize search parameters:
 	# text from user: searchWords (multiple), searchSpeaker (1), searchSource (1)
 	# and searchSet is either searchAll (default) or searchSubset
-	words_as_string = req.get('searchWords', "").strip()
+	words_as_string = req.get('words', "").strip()
 	words_list = re.findall(r'\w+', words_as_string.lower()) # like in add_data()
-	speaker = req.get('searchSpeaker', "").strip()
-	source = req.get('searchSource', "").strip()
-	search_set = req.get('searchSet', "all")
+	speaker = req.get('speaker', "").strip()
+	source = req.get('source', "").strip()
+	new_search = req.get('newSearch', "no")
 	# get utterances within search_set that match speaker and source
 	if speaker != "":
 		utterances = utterances.filter(speaker=speaker)
@@ -105,18 +105,19 @@ def filter_strict(request):
 	for w in words_list:
 		utterances = utterances.filter(words=w)
 	# add success/fail message if this is a new search (rather than pagination)
-	if req.get('newSearch', "no") == "yes":
+	criteria_message = ""
+	if new_search == "yes":
 		criteria_message = make_criteria_message(words_as_string, words_list, speaker, source)
 	if len(words_list) == 0 and len(speaker) == 0 and len(source) == 0:
 		utterances = CompleteUtterance.objects.all()
-		if req.get('newSearch', "no") == "yes":
+		if new_search == "yes":
 			messages.error(request, "Please enter a word, speaker, or source to search.")
 	elif not utterances.exists():
 		utterances = CompleteUtterance.objects.all()
-		if req.get('newSearch', "no") == "yes":
+		if new_search == "yes":
 			messages.error(request, "No utterances found that satisfy all of the following criteria: " + criteria_message)
 	else: # utterances.exists() is True
-		if req.get('newSearch', "no") == "yes":
+		if new_search == "yes":
 			messages.success(request, "Successfully found utterances that satisfy all of the following criteria: " + criteria_message)
 	paging = Paginator(utterances.order_by('source', 'id'), page_size)
 	return render(request, "hilichurlian_database/results.html", {
