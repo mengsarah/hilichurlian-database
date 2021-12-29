@@ -8,8 +8,9 @@ import re
 import math
 
 ### FORM CLASSES ###
-# CompleteUtterance: don't show the words field
 CompleteUtteranceForm = modelform_factory(CompleteUtterance, fields=['utterance', 'speaker', 'translation', 'translation_source', 'context', 'source'])
+CompleteUtteranceUpdateForm = modelform_factory(CompleteUtterance, fields=['speaker', 'source'])
+
 
 ### GLOBAL CONSTANTS ###
 DEFAULT_PAGE_SIZE = 10
