@@ -26,7 +26,12 @@ def describe_url(url):
 		# from Python's regex how-to:
 		# "The syntax for a named group is one of the Python-specific extensions: (?P<name>...)."
 		domain_re = re.compile("(?P<domain>(?:\w+\.)*\w+\.(?:com|co|org|net))")
-		site_name = domain_re.search(url).group('domain')
+		site_name_search = domain_re.search(url)
+		if site_name_search:
+			site_name = site_name_search.group('domain')
+		else:
+			# forget describing it
+			return url
 		page_re = re.compile("(?:\w\.(?:com|co|org|net)/(?P<page>.*))")
 		site_page = page_re.search(url).group('page')
 	return "{page} ({site})".format(page=site_page, site=site_name)
