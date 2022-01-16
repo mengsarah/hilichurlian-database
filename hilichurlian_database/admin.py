@@ -2,7 +2,7 @@ from django.contrib import admin, messages
 from django.urls import path
 from django.shortcuts import render, redirect
 from django.forms import ModelForm
-from .models import Word, CompleteUtterance
+from .models import Source, Word, CompleteUtterance
 
 # for logging updates
 from simple_history.admin import SimpleHistoryAdmin
@@ -139,5 +139,6 @@ def update_multiple_execute(model_admin_instance, request):
 
 ### ADMIN SITE MODEL REGISTRATION ###
 
+admin.site.register(Source)
 admin.site.register(Word, SimpleHistoryAdmin)
 admin.site.register(CompleteUtterance, CompleteUtteranceAdmin)
