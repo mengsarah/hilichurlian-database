@@ -9,8 +9,11 @@ import math
 
 ### FORM CLASSES ###
 CompleteUtteranceForm = modelform_factory(CompleteUtterance, fields=['utterance', 'speaker', 'translation', 'translation_source', 'context', 'source'])
-CompleteUtteranceUpdateForm = modelform_factory(CompleteUtterance, fields=['speaker', 'source'])
 
+
+### COMING SOON ###
+# CompleteUtterance: don't show the words field (to do: figure out how to handle related_sources)
+# CompleteUtteranceForm = modelform_factory(CompleteUtterance, fields=['utterance', 'speaker', 'speaker_type', 'translation', 'translation_source', 'context', 'source', 'version'])
 
 ### GLOBAL CONSTANTS ###
 DEFAULT_PAGE_SIZE = 10

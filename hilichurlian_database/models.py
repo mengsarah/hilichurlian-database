@@ -58,11 +58,6 @@ class Word(models.Model):
 		primary_key = True,
 		help_text = "Must be a word that can be found in an utterance."
 	)
-	# translation = models.CharField(
-	# 	max_length = 100,
-	# 	blank = True,
-	# 	help_text = ""
-	# )
 
 	object_history = HistoricalRecords()
 

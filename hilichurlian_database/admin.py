@@ -139,6 +139,6 @@ def update_multiple_execute(model_admin_instance, request):
 
 ### ADMIN SITE MODEL REGISTRATION ###
 
-admin.site.register(Source)
+admin.site.register(Source, SimpleHistoryAdmin)
 admin.site.register(Word, SimpleHistoryAdmin)
 admin.site.register(CompleteUtterance, CompleteUtteranceAdmin)
