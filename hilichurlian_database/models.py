@@ -23,6 +23,25 @@ def get_version_list():
 
 ### MODELS ###
 
+class Speaker(models.Model):
+	SPEAKER_TYPES = [
+		("hili", "Hilichurl"),
+		("abys", "Abyss Order"),
+		("stud", "Student"),
+	]
+
+	name = models.CharField(
+		max_length = 75,
+		help_text = "Provide a living being when possible. Non-living entities such as Quest UI are acceptable as a last resort."
+	) # db_index=True later?
+
+	type = models.CharField(max_length=4, choices=SPEAKER_TYPES)
+
+	object_history = HistoricalRecords()
+
+	def __str__(self):
+		return self.name
+
 class Source(models.Model):
 	VERSIONS = get_version_list()
 	BULK_UPDATABLE = []
@@ -57,6 +76,16 @@ class Word(models.Model):
 		max_length = 25,
 		primary_key = True,
 		help_text = "Must be a word that can be found in an utterance."
+	)
+	variants_same_word = models.ManyToManyField(
+		"self",
+		blank = True, # there may not be variants in the database yet
+		help_text = "Select words that are exactly the same as this word and are only elongated, shortened, or otherwise similarly altered. For example, 'yaaaa' is an elongated version of 'ya' and is otherwise the exact same word."
+	)
+	variants_grammatical = models.ManyToManyField(
+		"self",
+		blank = True, # there may not be variants in the database yet
+		help_text = "Select words that are grammatical variants of this word. These words must not be the same words. For example, 'mi' and 'mimi' are grammatical variants of each other."
 	)
 
 	object_history = HistoricalRecords()
