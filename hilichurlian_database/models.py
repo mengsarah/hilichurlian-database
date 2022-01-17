@@ -79,11 +79,13 @@ class Word(models.Model):
 	)
 	variants_same_word = models.ManyToManyField(
 		"self",
+		verbose_name = "other written forms of this word",
 		blank = True, # there may not be variants in the database yet
 		help_text = "Select words that are exactly the same as this word and are only elongated, shortened, or otherwise similarly altered. For example, 'yaaaa' is an elongated version of 'ya' and is otherwise the exact same word."
 	)
 	variants_grammatical = models.ManyToManyField(
 		"self",
+		verbose_name = "related words",
 		blank = True, # there may not be variants in the database yet
 		help_text = "Select words that are grammatical variants of this word. These words must not be the same words. For example, 'mi' and 'mimi' are grammatical variants of each other."
 	)
