@@ -12,5 +12,5 @@ urlpatterns = [
 	# for POST
 	path('add_data', views.add_data, name='add_data'),
 	# submit page is only ever temporarily up
-	path('submit', views.data_entry, name='data_entry'),
+	# path('submit', views.data_entry, name='data_entry'),
 ]
