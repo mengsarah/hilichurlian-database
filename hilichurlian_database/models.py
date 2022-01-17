@@ -24,6 +24,7 @@ def get_version_list():
 ### MODELS ###
 
 class Speaker(models.Model):
+	# data fields: name, type
 	SPEAKER_TYPES = [
 		("hili", "Hilichurl"),
 		("abys", "Abyss Order"),
@@ -34,7 +35,6 @@ class Speaker(models.Model):
 		max_length = 75,
 		help_text = "Provide a living being when possible. Non-living entities such as Quest UI are acceptable as a last resort."
 	) # db_index=True later?
-
 	type = models.CharField(max_length=4, choices=SPEAKER_TYPES)
 
 	object_history = HistoricalRecords()
@@ -43,6 +43,7 @@ class Speaker(models.Model):
 		return self.name
 
 class Source(models.Model):
+	# data fields: name, url, version, related_sources
 	VERSIONS = get_version_list()
 	BULK_UPDATABLE = []
 
@@ -70,6 +71,7 @@ class Source(models.Model):
 		return self.name
 
 class Word(models.Model):
+	# data fields: word, variants_same_word, variants_grammatical
 	BULK_UPDATABLE = []
 
 	word = models.CharField(
@@ -96,6 +98,7 @@ class Word(models.Model):
 		return self.word
 
 class CompleteUtterance(models.Model):
+	# data fields: utterance, words, speaker, translation, translation_source, context, source
 	BULK_UPDATABLE = ['speaker', 'source']
 
 	# making the autofield explicit as a reminder
