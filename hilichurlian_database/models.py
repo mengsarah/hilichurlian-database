@@ -99,7 +99,7 @@ class Word(models.Model):
 
 class CompleteUtterance(models.Model):
 	# data fields: utterance, words, speaker, translation, translation_source, context, source
-	BULK_UPDATABLE = ['speaker', 'source']
+	BULK_UPDATABLE = ['speaker', 'source_url']
 
 	# making the autofield explicit as a reminder
 	id = models.AutoField(primary_key=True)
@@ -127,7 +127,7 @@ class CompleteUtterance(models.Model):
 		blank = True,
 		help_text = "Should be official material when possible. Include as much as needed."
 	)
-	source = models.CharField(
+	source_url = models.CharField(
 		max_length = 200,
 		help_text = "Must be the URL of an online resource documenting the utterance and its translation if provided."
 	)

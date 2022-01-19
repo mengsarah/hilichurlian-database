@@ -8,7 +8,7 @@ import re
 import math
 
 ### FORM CLASSES ###
-CompleteUtteranceForm = modelform_factory(CompleteUtterance, fields=['utterance', 'speaker', 'translation', 'translation_source', 'context', 'source'])
+CompleteUtteranceForm = modelform_factory(CompleteUtterance, fields=['utterance', 'speaker', 'translation', 'translation_source', 'context', 'source_url'])
 
 
 ### COMING SOON ###
@@ -42,7 +42,7 @@ def add_data(request):
 		new_utterance.translation = data['translation']
 		new_utterance.translation_source = data['translation_source']
 		new_utterance.context = data['context']
-		new_utterance.source = data['source']
+		new_utterance.source_url = data['source']
 		new_utterance.save()
 		# get list of words; luckily, transcribed Hilichurlian is relatively simple
 		# (currently don't have to account for punctuation within words)
@@ -70,7 +70,7 @@ def index(request):
 	if int(page) > 1:
 		# go away, big home page blurb
 		render_page = "hilichurlian_database/results.html"
-	paging = Paginator(CompleteUtterance.objects.order_by('source', 'id'), page_size)
+	paging = Paginator(CompleteUtterance.objects.order_by('source_url', 'id'), page_size)
 	return render(request, render_page, {
 		'db_page': paging.get_page(page),
 		'page_range': paging.get_elided_page_range(page, on_each_side=2, on_ends=3),
@@ -104,7 +104,7 @@ def filter_strict(request):
 	if speaker != "":
 		utterances = utterances.filter(speaker=speaker)
 	if source != "":
-		utterances = utterances.filter(source=source)
+		utterances = utterances.filter(source_url=source)
 	# now that the set is smaller, get utterances that have all of the words
 	for w in words_list:
 		utterances = utterances.filter(words=w)
@@ -123,7 +123,7 @@ def filter_strict(request):
 	else: # utterances.exists() is True
 		if new_search == "yes":
 			messages.success(request, "Successfully found utterances that satisfy all of the following criteria: " + criteria_message)
-	paging = Paginator(utterances.order_by('source', 'id'), page_size)
+	paging = Paginator(utterances.order_by('source_url', 'id'), page_size)
 	return render(request, "hilichurlian_database/results.html", {
 		'db_page': paging.get_page(page),
 		'page_range': paging.get_elided_page_range(page, on_each_side=2, on_ends=3),
