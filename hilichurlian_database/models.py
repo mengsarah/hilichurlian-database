@@ -131,7 +131,7 @@ class CompleteUtterance(models.Model):
 		max_length = 200,
 		help_text = "Must be the URL of an online resource documenting the utterance and its translation if provided."
 	)
-	# source = models.ForeignKey(Source, on_delete=models.PROTECT) # coming soon; prevent source deletion because that really should never happen, and if it does, then it needs to be specially handled (e.g. retcon)
+	source = models.ForeignKey(Source, on_delete=models.PROTECT, null=True) # prevent source deletion because it should never happen; if it does, then it needs to be manually handled (e.g. retcon)
 	
 	object_history = HistoricalRecords()
 
