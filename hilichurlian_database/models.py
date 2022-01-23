@@ -99,7 +99,7 @@ class Word(models.Model):
 
 class CompleteUtterance(models.Model):
 	# data fields: utterance, words, speaker, translation, translation_source, context, source
-	BULK_UPDATABLE = ['speaker', 'source']
+	BULK_UPDATABLE = ['speaker_name', 'source']
 
 	# making the autofield explicit as a reminder
 	id = models.AutoField(primary_key=True)
@@ -109,7 +109,7 @@ class CompleteUtterance(models.Model):
 		help_text = "Please enter the full Hilichurlian sentence or phrase that was spoken or written. Individual words are acceptable if they were said as if they were a single sentence, such as in a one-word exclamation."
 	)
 	words = models.ManyToManyField(Word) # auto assign based on utterance
-	speaker = models.CharField(
+	speaker_name = models.CharField(
 		max_length = 75,
 		help_text = "Provide a living being when possible. Non-living entities such as Quest UI are acceptable as a last resort."
 	) # db_index=True later? move into a new Speaker model with speaker_type?
