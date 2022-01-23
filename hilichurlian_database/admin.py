@@ -48,9 +48,9 @@ class CompleteUtteranceAdmin(SimpleHistoryAdmin):
 	# Admin UI
 	fieldsets = [
 		('Content',				{'fields': ['utterance', 'words']}),
-		('Context',				{'fields': ['speaker', 'translation', 'translation_source', 'context', 'source_url', 'source']}),
+		('Context',				{'fields': ['speaker', 'translation', 'translation_source', 'context', 'source']}),
 	]
-	list_display = ('__str__', 'speaker', 'source_url')
+	list_display = ('__str__', 'speaker', 'source')
 	actions = ['update_multiple_utterances']
 
 	@admin.action(description='Unify attributes for selected complete utterances')

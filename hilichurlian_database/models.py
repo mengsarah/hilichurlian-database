@@ -98,8 +98,8 @@ class Word(models.Model):
 		return self.word
 
 class CompleteUtterance(models.Model):
-	# data fields: utterance, words, speaker, translation, translation_source, context, source_url, source
-	BULK_UPDATABLE = ['speaker', 'source_url', 'source']
+	# data fields: utterance, words, speaker, translation, translation_source, context, source
+	BULK_UPDATABLE = ['speaker', 'source']
 
 	# making the autofield explicit as a reminder
 	id = models.AutoField(primary_key=True)
@@ -127,11 +127,7 @@ class CompleteUtterance(models.Model):
 		blank = True,
 		help_text = "Should be official material when possible. Include as much as needed."
 	)
-	source_url = models.CharField(
-		max_length = 200,
-		help_text = "Must be the URL of an online resource documenting the utterance and its translation if provided."
-	)
-	source = models.ForeignKey(Source, on_delete=models.PROTECT, null=True) # prevent source deletion because it should never happen; if it does, then it needs to be manually handled (e.g. retcon)
+	source = models.ForeignKey(Source, on_delete=models.PROTECT) # prevent source deletion because it should never happen; if it does, then it needs to be manually handled (e.g. retcon)
 	
 	object_history = HistoricalRecords()
 

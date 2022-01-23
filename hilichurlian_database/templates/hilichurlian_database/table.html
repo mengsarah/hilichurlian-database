@@ -1,5 +1,3 @@
-{% load describe_url %}
-
 {% include "hilichurlian_database/elements/search-fields.html" %}
 
 <form id="page-size" method="GET" action="{% if criteria %}{% url 'hilichurlian_database:filter_strict' %}{% else %}{% url 'hilichurlian_database:view' %}{% endif %}">
@@ -52,7 +50,7 @@
 			{{utt.context}}
 		</div></td>
 		<td><div class="long-text">
-			<a href="{{utt.source_url}}">{{utt.source_url|describe_url}}</a>
+			<a href="{{utt.source.url}}">{{utt.source}}</a>
 		</div></td>
 	</tr>
 	{% empty %}
