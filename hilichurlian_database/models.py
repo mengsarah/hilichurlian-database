@@ -99,7 +99,7 @@ class Word(models.Model):
 
 class CompleteUtterance(models.Model):
 	# data fields: utterance, words, speaker, translation, translation_source, context, source
-	BULK_UPDATABLE = ['speaker_name', 'source']
+	BULK_UPDATABLE = ['speaker_name', 'speaker', 'source']
 
 	# making the autofield explicit as a reminder
 	id = models.AutoField(primary_key=True)
@@ -113,6 +113,7 @@ class CompleteUtterance(models.Model):
 		max_length = 75,
 		help_text = "Provide a living being when possible. Non-living entities such as Quest UI are acceptable as a last resort."
 	) # db_index=True later? move into a new Speaker model with speaker_type?
+	speaker = models.ForeignKey(Speaker, on_delete=models.PROTECT, null=True) # prevent speaker deletion because it should never happen; if it does, then it needs to be manually handled (e.g. retcon)
 	translation = models.CharField(
 		max_length = 200,
 		blank = True,
