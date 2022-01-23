@@ -98,8 +98,8 @@ class Word(models.Model):
 		return self.word
 
 class CompleteUtterance(models.Model):
-	# data fields: utterance, words, speaker, translation, translation_source, context, source
-	BULK_UPDATABLE = ['speaker', 'source_url']
+	# data fields: utterance, words, speaker, translation, translation_source, context, source_url, source
+	BULK_UPDATABLE = ['speaker', 'source_url', 'source']
 
 	# making the autofield explicit as a reminder
 	id = models.AutoField(primary_key=True)

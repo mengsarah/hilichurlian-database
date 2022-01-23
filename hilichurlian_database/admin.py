@@ -48,7 +48,7 @@ class CompleteUtteranceAdmin(SimpleHistoryAdmin):
 	# Admin UI
 	fieldsets = [
 		('Content',				{'fields': ['utterance', 'words']}),
-		('Context',				{'fields': ['speaker', 'translation', 'translation_source', 'context', 'source_url']}),
+		('Context',				{'fields': ['speaker', 'translation', 'translation_source', 'context', 'source_url', 'source']}),
 	]
 	list_display = ('__str__', 'speaker', 'source_url')
 	actions = ['update_multiple_utterances']
