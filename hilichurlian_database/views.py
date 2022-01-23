@@ -3,15 +3,16 @@ from django.shortcuts import render, redirect
 from django.core.paginator import Paginator
 from django.contrib import messages
 from django.forms import modelform_factory, widgets
-from .models import CompleteUtterance, Word, Source
+from .models import CompleteUtterance, Word, Speaker, Source
 import re
 import math
 
 ### FORM CLASSES ###
 CompleteUtteranceForm = modelform_factory(
 	CompleteUtterance,
-	fields=['utterance', 'speaker_name', 'translation', 'translation_source', 'context', 'source'],
+	fields=['utterance', 'speaker', 'translation', 'translation_source', 'context', 'source'],
 	widgets = {
+		'speaker': widgets.TextInput(),
 		'source': widgets.TextInput()
 	}
 )
@@ -44,10 +45,12 @@ def add_data(request):
 		data = request.POST
 		new_utterance = CompleteUtterance()
 		new_utterance.utterance = data['utterance']
-		new_utterance.speaker_name = data['speaker']
 		new_utterance.translation = data['translation']
 		new_utterance.translation_source = data['translation_source']
 		new_utterance.context = data['context']
+
+		(speaker_in_db, created) = Speaker.objects.get_or_create(name=data['speaker'])
+		new_utterance.source = speaker_in_db
 
 		(source_in_db, created) = Source.objects.get_or_create(url=data['source'])
 		new_utterance.source = source_in_db
@@ -111,7 +114,7 @@ def filter_strict(request):
 	new_search = req.get('newSearch', "no")
 	# get utterances within search_set that match speaker and source
 	if speaker != "":
-		utterances = utterances.filter(speaker_name=speaker)
+		utterances = utterances.filter(speaker__name=speaker)
 	if source != "":
 		utterances = utterances.filter(source__url=source)
 	# now that the set is smaller, get utterances that have all of the words
