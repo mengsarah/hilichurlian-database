@@ -37,6 +37,20 @@ def make_criteria_message(words_as_string, words_list, speaker, source):
 		criteria.append(source)
 	return str(criteria)[1:-1]
 
+# return the context object for the pages when browsing the database
+def database_public_view_context(paginator, page_num, page_size, words="", speaker="", source=""):
+	return {
+		'db_page': paginator.get_page(page_num),
+		'page_range': paginator.get_elided_page_range(page_num, on_each_side=2, on_ends=3),
+		'page_range2': paginator.get_elided_page_range(page_num, on_each_side=2, on_ends=3),
+		'page_size': page_size,
+		'criteria': {
+			'words': words,
+			'speaker': speaker,
+			'source': source,
+		},
+	}
+
 
 ### VIEWS FOR POST ###
 
@@ -83,17 +97,11 @@ def index(request):
 		# go away, big home page blurb
 		render_page = "hilichurlian_database/results.html"
 	paging = Paginator(CompleteUtterance.objects.order_by('source', 'id'), page_size)
-	return render(request, render_page, {
-		'db_page': paging.get_page(page),
-		'page_range': paging.get_elided_page_range(page, on_each_side=2, on_ends=3),
-		'page_range2': paging.get_elided_page_range(page, on_each_side=2, on_ends=3),
-		'page_size': page_size,
-		'criteria': {
-			'words': "",
-			'speaker': "",
-			'source': "",
-		},
-	})
+	return render(
+		request,
+		render_page,
+		database_public_view_context(paging, page, page_size)
+	)
 
 # for searching
 def filter_strict(request):
@@ -136,17 +144,11 @@ def filter_strict(request):
 		if new_search == "yes":
 			messages.success(request, "Successfully found utterances that satisfy all of the following criteria: " + criteria_message)
 	paging = Paginator(utterances.order_by('source', 'id'), page_size)
-	return render(request, "hilichurlian_database/results.html", {
-		'db_page': paging.get_page(page),
-		'page_range': paging.get_elided_page_range(page, on_each_side=2, on_ends=3),
-		'page_range2': paging.get_elided_page_range(page, on_each_side=2, on_ends=3),
-		'page_size': page_size,
-		'criteria': {
-			'words': words_as_string,
-			'speaker': speaker,
-			'source': source,
-		},
-	})
+	return render(
+		request,
+		"hilichurlian_database/results.html",
+		database_public_view_context(paging, page, page_size, words_as_string, speaker, source)
+	)
 
 def about(request):
 	return render(request, "hilichurlian_database/about.html")
