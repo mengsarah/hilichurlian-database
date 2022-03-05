@@ -2,25 +2,13 @@ from django.db.models import Q
 from django.shortcuts import render, redirect
 from django.core.paginator import Paginator
 from django.contrib import messages
-from django.forms import modelform_factory, widgets
-from .models import CompleteUtterance, Word, Speaker, Source
+from django.forms import modelform_factory
+from .models import Speaker, Source, Word, CompleteUtterance
+from .templatetags import describe_url
 import re
-import math
 
 ### FORM CLASSES ###
-CompleteUtteranceForm = modelform_factory(
-	CompleteUtterance,
-	fields=['utterance', 'speaker', 'translation', 'translation_source', 'context', 'source'],
-	widgets = {
-		'speaker': widgets.TextInput(),
-		'source': widgets.TextInput()
-	}
-)
-
-
-### COMING SOON ###
-# CompleteUtterance: don't show the words field (to do: figure out how to handle related_sources)
-# CompleteUtteranceForm = modelform_factory(CompleteUtterance, fields=['utterance', 'speaker', 'speaker_type', 'translation', 'translation_source', 'context', 'source', 'version'])
+CompleteUtteranceForm = modelform_factory(CompleteUtterance, fields=CompleteUtterance.FORM_FIELDS)
 
 ### GLOBAL CONSTANTS ###
 DEFAULT_PAGE_SIZE = 10

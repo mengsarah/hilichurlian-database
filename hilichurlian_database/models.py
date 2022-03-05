@@ -15,7 +15,7 @@ def get_version_list():
 	VERSIONS_TWO = [ 2 + (x/10.0) for x in range(5) ] # 2.0 through 2.4
 	VERSIONS_RAW = [ *VERSIONS_ONE, *VERSIONS_TWO ]
 	version_list = [("0", "Pre-launch")] 
-	# "0" is not for language that also appears post-launch
+	# "0" is not for utterances that also appear post-launch
 	for version in VERSIONS_RAW:
 		version_list.append( ( str(version), "Version " + str(version) ) )
 	return version_list
@@ -24,12 +24,15 @@ def get_version_list():
 ### MODELS ###
 
 class Speaker(models.Model):
-	# data fields: name, type
 	SPEAKER_TYPES = [
 		("hili", "Hilichurl"),
 		("abys", "Abyss Order"),
 		("stud", "Student"),
+		("unkn", "Unknown"), # e.g. quest UI
 	]
+
+	FORM_FIELDS = ['name']
+	BULK_UPDATABLE = ['type']
 
 	name = models.CharField(
 		max_length = 75,
@@ -43,9 +46,12 @@ class Speaker(models.Model):
 		return self.name
 
 class Source(models.Model):
-	# data fields: name, url, version, related_sources
 	VERSIONS = get_version_list()
-	BULK_UPDATABLE = []
+
+	FORM_FIELDS = ['url', 'version']
+	# auto-populated fields: name
+	# manually populated fields: related_sources
+	BULK_UPDATABLE = ['version']
 
 	name = models.CharField(
 		max_length = 200,
@@ -71,7 +77,9 @@ class Source(models.Model):
 		return self.name
 
 class Word(models.Model):
-	# data fields: word, variants_same_word, variants_grammatical
+	FORM_FIELDS = []
+	# auto-populated fields: word
+	# manually populated fields: variants_same_word, variants_grammatical
 	BULK_UPDATABLE = []
 
 	word = models.CharField(
@@ -98,7 +106,8 @@ class Word(models.Model):
 		return self.word
 
 class CompleteUtterance(models.Model):
-	# data fields: utterance, words, speaker, translation, translation_source, context, source
+	FORM_FIELDS = ['utterance', 'speaker', 'translation', 'translation_source', 'context', 'source']
+	# auto-populated fields: words
 	BULK_UPDATABLE = ['speaker', 'source']
 
 	# making the autofield explicit as a reminder
