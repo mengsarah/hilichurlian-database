@@ -17,14 +17,15 @@
 	</ul>
 	<p>Data may be cleaned some time after entry.</p>
 	<p>This submission page is temporary and will be taken down once the database has been updated with all or nearly all of the Hilichurlian currently in the game.</p>
-	<p>I trust that you all will not abuse this submission form!</p>
+	<p>I'm hoping everyone who submits something does so in good faith!</p>
 </div>
 
+{% for form in forms %}
 <form method="POST" action="{% url 'hilichurlian_database:add_data' %}" id="submit-form" class="long-form">
 	{% csrf_token %}
 	<fieldset>
-		<legend>Data entry</legend>
-		{% for field in form %}
+		<legend>Data entry for a new {{ form.name }}</legend>
+		{% for field in form.form_object %}
 		<div class="form-field">
 			<label class="field-label{% if field.field.required %} field-required{% endif %}" for="id_{{ field.name }}">{{ field.label }}</label>
 			{{ field }}
@@ -33,7 +34,6 @@
 		<input type="submit" value="Submit">
 	</fieldset>
 </form>
-
-<!-- show all data -->
+{% endfor %}
 
 {% endblock %}

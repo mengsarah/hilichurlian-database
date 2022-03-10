@@ -9,6 +9,7 @@ import re
 
 ### FORM CLASSES ###
 CompleteUtteranceForm = modelform_factory(CompleteUtterance, fields=CompleteUtterance.FORM_FIELDS)
+SourceForm = modelform_factory(Source, fields=Source.FORM_FIELDS)
 
 ### GLOBAL CONSTANTS ###
 DEFAULT_PAGE_SIZE = 10
@@ -143,6 +144,17 @@ def about(request):
 
 # the /submit page
 def data_entry(request):
-	# blank form
-	submit_form = CompleteUtteranceForm()
-	return render(request, "hilichurlian_database/submit.html", {'form': submit_form})
+	# blank forms
+	forms = [
+		{
+			"form_object": CompleteUtteranceForm(),
+			"name": "utterance",
+			"submit_view": "hilichurlian_database:add_data",
+		},
+		{
+			"form_object": SourceForm(),
+			"name": "source",
+			"submit_view": "hilichurlian_database:add_data",
+		},
+	]
+	return render(request, "hilichurlian_database/submit.html", {'forms': forms})
