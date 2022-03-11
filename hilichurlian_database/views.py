@@ -16,6 +16,16 @@ DEFAULT_PAGE_SIZE = 10
 
 ### HELPER FUNCTIONS ###
 
+def get_model_class(model_name):
+	MODEL_MAPPING = {
+		"Speaker": Speaker,
+		"Source": Source,
+		"Word": Word,
+		"CompleteUtterance": CompleteUtterance,
+		"Utterance": CompleteUtterance
+	}
+	return MODEL_MAPPING.get(model_name.capitalize())
+
 def make_criteria_message(words_as_string, words_list, speaker, source):
 	criteria = []
 	if len(words_list) > 0:
@@ -47,27 +57,36 @@ def database_public_view_context(paginator, page_num, page_size, words="", speak
 def add_data(request, submit_type):
 	if (request.method == 'POST') and submit_type:
 		data = request.POST
-		new_utterance = CompleteUtterance()
-		new_utterance.utterance = data['utterance']
-		new_utterance.translation = data['translation']
-		new_utterance.translation_source = data['translation_source']
-		new_utterance.context = data['context']
-
-		(speaker_in_db, created) = Speaker.objects.get_or_create(name=data['speaker'])
-		new_utterance.source = speaker_in_db
-
-		(source_in_db, created) = Source.objects.get_or_create(url=data['source'])
-		new_utterance.source = source_in_db
-
-		# get list of words; luckily, transcribed Hilichurlian is relatively simple
-		# (currently don't have to account for punctuation within words)
-		utterance_words = re.findall(r'\w+', data['utterance'].lower())
-		for utt_word in utterance_words:
-			(word_in_db, created) = Word.objects.get_or_create(word=utt_word)
-			new_utterance.words.add(word_in_db)
-
-		new_utterance.save()
-		messages.success(request, 'Added "' + data['utterance'] + '"')
+		new_entry = submit_type
+		if submit_type == "utterance":
+			new_entry = CompleteUtterance()
+			for label, value in data.items():
+				if label in new_entry.SPECIALLY_HANDLED:
+					# search for existing speaker/source (ForeignKeys)
+					(object_for_field, created) = get_model_class(label).objects.get_or_create(id=value)
+					setattr(new_entry, label, object_for_field)
+				elif label in new_entry.FORM_FIELDS: # valid fields only!
+					setattr(new_entry, label, value)
+			new_entry.save() # save now for manytomany Word relationship
+			# get list of words; luckily, simple because no punctuation within words (yet)
+			utterance_words = re.findall(r'\w+', data['utterance'].lower())
+			for utt_word in utterance_words:
+				(word_in_db, created) = Word.objects.get_or_create(word=utt_word)
+				new_entry.words.add(word_in_db)
+			new_entry.save()
+		elif submit_type == "source":
+			(source_in_db, created) = Source.objects.get_or_create(
+				url = data['url'],
+				defaults = { # only use these if source is new
+					'name': describe_url.describe_url(data['url']),
+					'version': data['version']
+				}
+			)
+			new_entry = source_in_db
+			# todo: message if not created, not standard success message
+		else:
+			messages.error(request, "No data received")
+		messages.success(request, 'Added "' + str(new_entry) + '"')
 	else:
 		messages.error(request, "No data received")
 	return redirect("hilichurlian_database:data_entry")
