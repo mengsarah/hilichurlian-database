@@ -27,6 +27,13 @@ def get_model_class(model_name):
 	}
 	return MODEL_MAPPING.get(model_name.capitalize())
 
+def get_forms():
+	return [
+		{ "form_object": CompleteUtteranceForm(), "name": "utterance", },
+		{ "form_object": SourceForm(), "name": "source", },
+		{ "form_object": SpeakerForm(), "name": "speaker", }
+	]
+
 def make_criteria_message(words_as_string, words_list, speaker, source):
 	criteria = []
 	if len(words_list) > 0:
@@ -178,19 +185,4 @@ def about(request):
 
 # the /submit page
 def data_entry(request):
-	# blank forms
-	forms = [
-		{
-			"form_object": CompleteUtteranceForm(),
-			"name": "utterance",
-		},
-		{
-			"form_object": SourceForm(),
-			"name": "source",
-		},
-		{
-			"form_object": SpeakerForm(),
-			"name": "speaker",
-		},
-	]
-	return render(request, "hilichurlian_database/submit.html", {'forms': forms})
+	return render(request, "hilichurlian_database/submit.html", {'forms': get_forms()})
