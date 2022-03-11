@@ -23,6 +23,14 @@ def get_version_list():
 
 ### MODELS ###
 
+# All models have the following constants:
+## FORM_FIELDS
+### for which fields should show up in user-facing forms
+## SPECIALLY_HANDLED
+### a subset of FORM_FIELDS; for which fields' values upon submission via aforementioned forms cannot simply be pasted into the corresponding model fields due to needing to look up a ForeignKey, checking if an object already exists with the value, etc.
+## BULK_UPDATABLE
+### for which fields can be updated in bulk in the admin site
+
 class Speaker(models.Model):
 	SPEAKER_TYPES = [
 		("hili", "Hilichurl"),
@@ -32,6 +40,7 @@ class Speaker(models.Model):
 	]
 
 	FORM_FIELDS = ['name']
+	SPECIALLY_HANDLED = ['name']
 	BULK_UPDATABLE = ['type']
 
 	name = models.CharField(
@@ -49,6 +58,7 @@ class Source(models.Model):
 	VERSIONS = get_version_list()
 
 	FORM_FIELDS = ['url', 'version']
+	SPECIALLY_HANDLED = [] # form submission needs get_or_create() anyway
 	# auto-populated fields: name
 	# manually populated fields: related_sources
 	BULK_UPDATABLE = ['version']
@@ -107,6 +117,7 @@ class Word(models.Model):
 
 class CompleteUtterance(models.Model):
 	FORM_FIELDS = ['utterance', 'speaker', 'translation', 'translation_source', 'context', 'source']
+	SPECIALLY_HANDLED = ['speaker', 'source']
 	# auto-populated fields: words
 	BULK_UPDATABLE = ['speaker', 'source']
 
