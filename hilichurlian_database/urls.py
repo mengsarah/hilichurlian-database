@@ -12,5 +12,5 @@ urlpatterns = [
 	# submissions are only ever temporarily open:
 	# path('submit', views.data_entry, name='data_entry'),
 	# for POST
-	# path('add_data', views.add_data, name='add_data'),
+	# path('add_data/<slug:submit_type>', views.add_data, name='add_data'),
 ]

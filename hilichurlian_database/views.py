@@ -43,8 +43,9 @@ def database_public_view_context(paginator, page_num, page_size, words="", speak
 
 ### VIEWS FOR POST ###
 
-def add_data(request):
-	if request.method == 'POST':
+# submit_type is the "name" in the form object in data_entry() (the /submit page)
+def add_data(request, submit_type):
+	if (request.method == 'POST') and submit_type:
 		data = request.POST
 		new_utterance = CompleteUtterance()
 		new_utterance.utterance = data['utterance']
