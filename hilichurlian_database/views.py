@@ -180,6 +180,11 @@ def filter_strict(request):
 		database_public_view_context(paging, page, page_size, words_as_string, speaker, source)
 	)
 
+# the /select page
+def view_all_criteria(request):
+	return render(request, "hilichurlian_database/select.html")
+
+# the /about page
 def about(request):
 	return render(request, "hilichurlian_database/about.html")
 

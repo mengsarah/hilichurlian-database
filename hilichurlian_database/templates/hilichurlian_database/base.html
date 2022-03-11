@@ -16,8 +16,9 @@
 	{% endblock %}
 
 	<nav>
-		<a href="{% url 'hilichurlian_database:index' %}">Main page</a>
+		<a href="{% url 'hilichurlian_database:index' %}">Home</a>
 		<a href="{% url 'hilichurlian_database:about' %}">About</a>
+		<a href="{% url 'hilichurlian_database:select' %}">View All Criteria</a>
 	</nav>
 
 	{% if messages %}
