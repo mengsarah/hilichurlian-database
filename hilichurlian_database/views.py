@@ -82,11 +82,14 @@ def add_data(request, submit_type):
 					'version': data['version']
 				}
 			)
-			new_entry = source_in_db
-			# todo: message if not created, not standard success message
+			if created:
+				new_entry = source_in_db
+			else:
+				messages.info(request, '"' + str(source_in_db) + '" already exists')
 		else:
 			messages.error(request, "No data received")
-		messages.success(request, 'Added "' + str(new_entry) + '"')
+		if new_entry != submit_type:
+			messages.success(request, 'Added "' + str(new_entry) + '"')
 	else:
 		messages.error(request, "No data received")
 	return redirect("hilichurlian_database:data_entry")
