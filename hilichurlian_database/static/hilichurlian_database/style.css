@@ -18,7 +18,7 @@ body {
 	font-family: Calibri, 'Segoe UI', Arial, Helvetica, sans-serif;
 }
 
-.information {
+.info, .information {
 	background-color: var(--light-blue);
 	color: var(--dark-blue);
 	border-color: var(--dark-blue);
