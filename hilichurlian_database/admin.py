@@ -9,10 +9,6 @@ from simple_history.admin import SimpleHistoryAdmin
 from simple_history.utils import bulk_update_with_history
 
 ### FORM CLASSES ###
-# CompleteUtteranceUpdateForm = modelform_factory(
-# 	CompleteUtterance,
-# 	fields = CompleteUtterance.BULK_UPDATABLE
-# )
 
 class CompleteUtteranceUpdateForm(ModelForm):
 	class Meta:
@@ -24,7 +20,6 @@ class CompleteUtteranceUpdateForm(ModelForm):
 		# this is only an update form, not an instantiation form
 		for field in self.fields:
 			self.fields[field].required = False
-
 
 
 ### MODEL ADMIN CLASSES ###

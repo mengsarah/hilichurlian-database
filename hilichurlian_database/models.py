@@ -40,7 +40,7 @@ class Speaker(models.Model):
 	]
 
 	FORM_FIELDS = ['name', 'type']
-	SPECIALLY_HANDLED = [] # form submission needs get_or_create() anyway
+	SPECIALLY_HANDLED = [] # form submission needs get_or_create()
 	BULK_UPDATABLE = ['type']
 
 	name = models.CharField(
@@ -58,7 +58,7 @@ class Source(models.Model):
 	VERSIONS = get_version_list()
 
 	FORM_FIELDS = ['url', 'version']
-	SPECIALLY_HANDLED = [] # form submission needs get_or_create() anyway
+	SPECIALLY_HANDLED = [] # form submission needs get_or_create()
 	# auto-populated fields: name
 	# manually populated fields: related_sources
 	BULK_UPDATABLE = ['version']
@@ -68,6 +68,7 @@ class Source(models.Model):
 		help_text = "Please enter the name of the source, such as a quest name or item name. (This is not the name of a website or other host of a source.)"
 	)
 	url = models.CharField(
+		verbose_name = "URL",
 		max_length = 200,
 		help_text = "Must be the URL of an online resource documenting the utterance and its translation if provided."
 	)

@@ -16,15 +16,15 @@
 		<li><strong>Translation sources</strong> are people or written material such as books.</li>
 	</ul>
 	<p>Data may be cleaned some time after entry.</p>
-	<p>This submission page is temporary and will be taken down once the database has been updated with all or nearly all of the Hilichurlian currently in the game.</p>
+	<p>This submission page is temporary and will be taken down once the database has been sufficiently updated.</p>
 	<p>I'm hoping everyone who submits something does so in good faith!</p>
 </div>
 
 {% for form in forms %}
-<form method="POST" action="{% url form.submit_view form.name %}" id="{{ form.name }}-form" class="long-form">
+<form method="POST" action="{% url 'hilichurlian_database:add_data' form.name %}" id="{{ form.name }}-form" class="long-form">
 	{% csrf_token %}
 	<fieldset>
-		<legend>Data entry for a new {{ form.name }}</legend>
+		<legend>New <strong>{{ form.name }}</strong></legend>
 		{% for field in form.form_object %}
 		<div class="form-field">
 			<label class="field-label{% if field.field.required %} field-required{% endif %}" for="id_{{ field.name }}">{{ field.label }}</label>

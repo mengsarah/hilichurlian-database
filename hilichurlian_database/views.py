@@ -62,13 +62,12 @@ def add_data(request, submit_type):
 		if submit_type == "utterance":
 			new_entry = CompleteUtterance()
 			for label, value in data.items():
-				if label in new_entry.SPECIALLY_HANDLED:
-					# search for existing speaker/source (ForeignKeys)
+				if label in new_entry.SPECIALLY_HANDLED: # find existing ForeignKeys
 					(object_for_field, created) = get_model_class(label).objects.get_or_create(id=value)
 					setattr(new_entry, label, object_for_field)
 				elif label in new_entry.FORM_FIELDS: # valid fields only!
 					setattr(new_entry, label, value)
-			new_entry.save() # save now for manytomany Word relationship
+			new_entry.save() # save now for Word ManyToMany
 			# get list of words; luckily, simple because no punctuation within words (yet)
 			utterance_words = re.findall(r'\w+', data['utterance'].lower())
 			for utt_word in utterance_words:
@@ -90,7 +89,7 @@ def add_data(request, submit_type):
 		elif submit_type == "speaker":
 			(speaker_in_db, created) = Speaker.objects.get_or_create(
 				name = data['name'],
-				defaults = { # only use these if source is new
+				defaults = { # only use these if speaker is new
 					'type': data['type']
 				}
 			)
@@ -184,17 +183,14 @@ def data_entry(request):
 		{
 			"form_object": CompleteUtteranceForm(),
 			"name": "utterance",
-			"submit_view": "hilichurlian_database:add_data",
 		},
 		{
 			"form_object": SourceForm(),
 			"name": "source",
-			"submit_view": "hilichurlian_database:add_data",
 		},
 		{
 			"form_object": SpeakerForm(),
 			"name": "speaker",
-			"submit_view": "hilichurlian_database:add_data",
 		},
 	]
 	return render(request, "hilichurlian_database/submit.html", {'forms': forms})
