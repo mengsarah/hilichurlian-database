@@ -16,6 +16,11 @@
 body {
 	background-color: var(--light-gray);
 	font-family: Calibri, 'Segoe UI', Arial, Helvetica, sans-serif;
+	margin: 0 auto;
+}
+
+h1, h2 {
+	text-align: center;
 }
 
 .info, .information {
@@ -50,12 +55,28 @@ ul.messages li, div.messages {
 
 nav {
 	text-align: center;
+	background-color: var(--gray);
 }
 
 nav a {
 	display: inline-block;
-	width: 7rem;
+	min-width: 3rem;
 	text-align: center;
+	padding: 0.5rem 1rem;
+}
+
+nav a:hover {
+	background-color: var(--dark-gray);
+	color: white;
+}
+
+nav a:active {
+	background-color: var(--dark-blue);
+	color: var(--light-blue);
+}
+
+footer {
+	margin: 0.5rem;
 }
 
 footer img, footer .text {
