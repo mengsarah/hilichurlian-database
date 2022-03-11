@@ -23,6 +23,10 @@ h1, h2 {
 	text-align: center;
 }
 
+section {
+	margin: 0.5rem 1rem;
+}
+
 .info, .information {
 	background-color: var(--light-blue);
 	color: var(--dark-blue);
@@ -76,7 +80,7 @@ nav a:active {
 }
 
 footer {
-	margin: 0.5rem;
+	padding: 0.5rem 1rem;
 }
 
 footer img, footer .text {

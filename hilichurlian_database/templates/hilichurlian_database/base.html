@@ -22,17 +22,21 @@
 	</nav>
 
 	{% if messages %}
-	<h2>Information</h2>
-	<ul class="messages">
-		{% for message in messages %}
-		<li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-		{% endfor %}
-	</ul>
+	<section>
+		<h2>Information</h2>
+		<ul class="messages">
+			{% for message in messages %}
+			<li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+			{% endfor %}
+		</ul>
+	</section>
 	{% endif %}
 
-	{% block content %}
-	{% endblock %}
-	
+	<section>
+		{% block content %}
+		{% endblock %}
+	</section>
+
 	<footer>
 		<img src="{% static 'hilichurlian_database/hilichurls.png' %}" alt="Three Hilichurls: one sleeping, one chilling, and one sweating while holding a Pyro Slime." />
 		<div class="text">
