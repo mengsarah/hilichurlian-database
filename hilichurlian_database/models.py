@@ -39,8 +39,8 @@ class Speaker(models.Model):
 		("unkn", "Unknown"), # e.g. quest UI
 	]
 
-	FORM_FIELDS = ['name']
-	SPECIALLY_HANDLED = ['name']
+	FORM_FIELDS = ['name', 'type']
+	SPECIALLY_HANDLED = [] # form submission needs get_or_create() anyway
 	BULK_UPDATABLE = ['type']
 
 	name = models.CharField(

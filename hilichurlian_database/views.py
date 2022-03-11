@@ -10,6 +10,7 @@ import re
 ### FORM CLASSES ###
 CompleteUtteranceForm = modelform_factory(CompleteUtterance, fields=CompleteUtterance.FORM_FIELDS)
 SourceForm = modelform_factory(Source, fields=Source.FORM_FIELDS)
+SpeakerForm = modelform_factory(Speaker, fields=Speaker.FORM_FIELDS)
 
 ### GLOBAL CONSTANTS ###
 DEFAULT_PAGE_SIZE = 10
@@ -86,6 +87,17 @@ def add_data(request, submit_type):
 				new_entry = source_in_db
 			else:
 				messages.info(request, '"' + str(source_in_db) + '" already exists')
+		elif submit_type == "speaker":
+			(speaker_in_db, created) = Speaker.objects.get_or_create(
+				name = data['name'],
+				defaults = { # only use these if source is new
+					'type': data['type']
+				}
+			)
+			if created:
+				new_entry = speaker_in_db
+			else:
+				messages.info(request, '"' + str(speaker_in_db) + '" already exists')
 		else:
 			messages.error(request, "No data received")
 		if new_entry != submit_type:
@@ -177,6 +189,11 @@ def data_entry(request):
 		{
 			"form_object": SourceForm(),
 			"name": "source",
+			"submit_view": "hilichurlian_database:add_data",
+		},
+		{
+			"form_object": SpeakerForm(),
+			"name": "speaker",
 			"submit_view": "hilichurlian_database:add_data",
 		},
 	]
