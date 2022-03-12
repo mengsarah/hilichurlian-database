@@ -180,6 +180,36 @@ tr.row-lighter td {
 	max-height: 4rem;
 }
 
+/* VIEW ALL CRITERIA/SELECT PAGE */
+
+div.container.flex {
+	display: flex;
+	flex-wrap: wrap;
+}
+
+section.flex.thin {
+	min-width: 12rem;
+	max-width: 18rem;
+	flex: 2;
+}
+
+section.flex.medium {
+	min-width: 18rem;
+	max-width: 27rem;
+	flex: 3;
+}
+
+section.flex.wide {
+	min-width: 30rem;
+	max-width: 40rem;
+	flex: 5;
+}
+
+section.flex.wide ul {
+	column-count: 3;
+	max-width: 75%;
+}
+
 /* FORMS */
 
 .field-required {
