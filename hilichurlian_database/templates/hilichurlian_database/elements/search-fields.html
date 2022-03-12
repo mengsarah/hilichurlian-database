@@ -3,15 +3,15 @@
 	<legend>Search for specific entries (fields may be left blank):</legend>
 	<input type="hidden" name="newSearch" value="yes" />
 	<div class="form-field">
-		<label for="searchWords">Hilichurlian words</label>
+		<label for="search-words">Hilichurlian words</label>
 		<input type="text" id="search-words" name="words" value="{{criteria.words|default:''}}" />
 	</div>
 	<div class="form-field">
-		<label for="searchSpeaker">Speaker (case sensitive)</label>
+		<label for="search-speaker">Speaker (case sensitive)</label>
 		<input type="text" id="search-speaker" name="speaker" value="{{criteria.speaker|default:''}}" />
 	</div>
 	<div class="form-field">
-		<label for="searchSource">Source URL (case sensitive)</label>
+		<label for="search-source">Source URL (case sensitive)</label>
 		<input type="text" id="search-source" name="source" value="{{criteria.source|default:''}}" />
 	</div>
 	<button type="submit" value="search">Search</button>
