@@ -34,7 +34,7 @@ def get_version_list():
 class Speaker(models.Model):
 	SPEAKER_TYPES = [
 		("hili", "Hilichurl"),
-		("abys", "Abyss Order"),
+		# ("abys", "Abyss Order"),
 		("stud", "Student"),
 		("unkn", "Unknown"), # e.g. quest UI
 	]
