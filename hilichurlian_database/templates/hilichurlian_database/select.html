@@ -10,16 +10,25 @@
 
 Coming soon^(TM)
 
-{% for source in source %}
-{{ source }}
+<h3>All Sources</h3>
+<ul>
+{% for source in sources %}
+<li>{{ source }}</li>
 {% endfor %}
+</ul>
 
-{% for speaker in speaker %}
-{{ speaker }}
+<h3>All Speakers</h3>
+<ul>
+{% for speaker in speakers %}
+<li>{{ speaker }}</li>
 {% endfor %}
+</ul>
 
+<h3>All Words</h3>
+<ul>
 {% for word in words %}
-{{ word }}
+<li>{{ word }}</li>
 {% endfor %}
+</ul>
 
 {% endblock %}

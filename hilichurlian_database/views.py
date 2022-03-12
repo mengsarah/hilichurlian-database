@@ -182,7 +182,14 @@ def filter_strict(request):
 
 # the /select page
 def view_all_criteria(request):
-	return render(request, "hilichurlian_database/select.html")
+	sources = Source.objects.all()
+	speakers = Speaker.objects.all()
+	words = CompleteUtterance.objects.all()
+	return render(request, "hilichurlian_database/select.html", {
+		'sources': sources,
+		'speakers': speakers,
+		'words': words,
+	})
 
 # the /about page
 def about(request):
