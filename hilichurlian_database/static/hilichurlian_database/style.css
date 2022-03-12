@@ -193,7 +193,7 @@ tr.row-lighter td {
 }
 
 .flex.thin {
-	min-width: 12rem;
+	min-width: 11rem;
 	max-width: 18rem;
 	flex: 2;
 }
@@ -251,6 +251,14 @@ tr.row-lighter td {
 	/* ALL PAGES */
 	footer img, footer .text {
 		max-width: 100%;
+	}
+
+	/* VIEW ALL CRITERIA/SELECT PAGE */
+	.container.flex {
+		display: block;
+	}
+	.flex.wide ul {
+		column-count: 2;
 	}
 
 	/* FORMS */
