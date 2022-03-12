@@ -12,23 +12,23 @@ Coming soon^(TM)
 
 <h3>All Sources</h3>
 <ul>
-{% for source in sources %}
-<li>{{ source }}</li>
-{% endfor %}
+	{% for source in sources %}
+	<li><a href="{% url 'hilichurlian_database:filter_strict' %}?source={{source.url}}">{{ source }}</a></li>
+	{% endfor %}
 </ul>
 
 <h3>All Speakers</h3>
 <ul>
-{% for speaker in speakers %}
-<li>{{ speaker }}</li>
-{% endfor %}
+	{% for speaker in speakers %}
+	<li><a href="{% url 'hilichurlian_database:filter_strict' %}?speaker={{speaker}}">{{ speaker }}</a></li>
+	{% endfor %}
 </ul>
 
 <h3>All Words</h3>
 <ul>
-{% for word in words %}
-<li>{{ word }}</li>
-{% endfor %}
+	{% for word in words %}
+	<li><a href="{% url 'hilichurlian_database:filter_strict' %}?words={{word}}">{{ word }}</a></li>
+	{% endfor %}
 </ul>
 
 {% endblock %}
