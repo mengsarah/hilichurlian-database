@@ -187,6 +187,11 @@ tr.row-lighter td {
 	flex-wrap: wrap;
 }
 
+.flex.thin, .flex.medium, .flex.wide {
+	margin-left: 0.5rem;
+	margin-right: 0.5rem;
+}
+
 .flex.thin {
 	min-width: 12rem;
 	max-width: 18rem;
@@ -194,8 +199,8 @@ tr.row-lighter td {
 }
 
 .flex.medium {
-	min-width: 18rem;
-	max-width: 27rem;
+	min-width: 24rem;
+	max-width: 36rem;
 	flex: 3;
 }
 
