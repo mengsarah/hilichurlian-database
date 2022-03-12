@@ -23,6 +23,10 @@ h1, h2 {
 	text-align: center;
 }
 
+h3, h4 {
+	margin-bottom: 0;
+}
+
 main {
 	margin: 0.5rem 1rem;
 }
@@ -43,6 +47,10 @@ main {
 	background-color: var(--light-red);
 	color: var(--dark-red);
 	border-color: var(--dark-red);
+}
+
+ul {
+	margin-top: 0;
 }
 
 ul.messages, div.messages {
@@ -81,6 +89,7 @@ nav a:active {
 
 footer {
 	padding: 0.5rem 1rem;
+	background-color: var(--gray);
 }
 
 footer img, footer .text {
@@ -90,6 +99,7 @@ footer img, footer .text {
 
 footer img {
 	max-width: 25%;
+	border: 2px black solid;
 }
 
 footer .text {
