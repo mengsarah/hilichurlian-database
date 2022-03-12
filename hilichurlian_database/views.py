@@ -158,10 +158,8 @@ def filter_strict(request):
 	# now that the set is smaller, get utterances that have all of the words
 	for w in words_list:
 		utterances = utterances.filter(words=w)
-	# add success/fail message if this is a new search (rather than pagination)
-	criteria_message = ""
-	if new_search == "yes":
-		criteria_message = make_criteria_message(words_as_string, words_list, speaker, source)
+	# add info about search
+	criteria_message = make_criteria_message(words_as_string, words_list, speaker, source)
 	if len(words_list) == 0 and len(speaker) == 0 and len(source) == 0:
 		utterances = CompleteUtterance.objects.all()
 		if new_search == "yes":
@@ -173,6 +171,8 @@ def filter_strict(request):
 	else: # utterances.exists() is True
 		if new_search == "yes":
 			messages.success(request, "Successfully found utterances that satisfy all of the following criteria: " + criteria_message)
+		else:
+			messages.info(request, "Showing utterances that satisfy all of the following criteria: " + criteria_message)
 	paging = Paginator(utterances.order_by('source', 'id'), page_size)
 	return render(
 		request,
