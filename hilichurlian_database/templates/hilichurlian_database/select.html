@@ -8,13 +8,16 @@
 	<p>IMPORTANT: There is a good chance that this page will be renamed, because I honestly don't know what good names for this page are.</p>
 </div>
 
+<section>
 <h3>All Sources</h3>
 <ul>
 	{% for source in sources %}
 	<li><a href="{% url 'hilichurlian_database:filter_strict' %}?source={{source.url}}">{{ source }}</a></li>
 	{% endfor %}
 </ul>
+</section>
 
+<section>
 <h3>All Speakers</h3>
 {% for type in speaker_types %}
 <h4>{% if type.1 != "Unknown" %}{{ type.1 }}{% else %}Other{% endif %}</h4>
@@ -24,12 +27,15 @@
 	{% endif %}{% endfor %}
 </ul>
 {% endfor %}
+</section>
 
+<section>
 <h3>All Words</h3>
 <ul>
 	{% for word in words %}
 	<li><a href="{% url 'hilichurlian_database:filter_strict' %}?words={{word}}">{{ word }}</a></li>
 	{% endfor %}
 </ul>
+</section>
 
 {% endblock %}
