@@ -9,34 +9,34 @@
 </div>
 
 <div class="container flex">
-<section class="flex medium">
-<h3>All Sources</h3>
-<ul>
-	{% for source in sources %}
-	<li><a href="{% url 'hilichurlian_database:filter_strict' %}?source={{source.url}}">{{ source }}</a></li>
-	{% endfor %}
-</ul>
-</section>
+	<section class="flex medium">
+		<h3>All Sources</h3>
+		<ul>
+			{% for source in sources %}
+			<li><a href="{% url 'hilichurlian_database:filter_strict' %}?source={{source.url}}">{{ source }}</a></li>
+			{% endfor %}
+		</ul>
+	</section>
 
-<section class="flex thin">
-<h3>All Speakers</h3>
-{% for type in speaker_types %}
-<h4>{% if type.1 != "Unknown" %}{{ type.1 }}{% else %}Other{% endif %}</h4>
-<ul>
-	{% for speaker in speakers %}{% if speaker.type == type.0 %}
-	<li><a href="{% url 'hilichurlian_database:filter_strict' %}?speaker={{speaker}}">{{ speaker }}</a></li>
-	{% endif %}{% endfor %}
-</ul>
-{% endfor %}
-</section>
+	<section class="flex thin">
+		<h3>All Speakers</h3>
+		{% for type in speaker_types %}
+		<h4>{% if type.1 != "Unknown" %}{{ type.1 }}{% else %}Other{% endif %}</h4>
+		<ul>
+			{% for speaker in speakers %}{% if speaker.type == type.0 %}
+			<li><a href="{% url 'hilichurlian_database:filter_strict' %}?speaker={{speaker}}">{{ speaker }}</a></li>
+			{% endif %}{% endfor %}
+		</ul>
+		{% endfor %}
+	</section>
 
-<section class="flex wide">
-<h3>All Words</h3>
-<ul>
-	{% for word in words %}
-	<li><a href="{% url 'hilichurlian_database:filter_strict' %}?words={{word}}">{{ word }}</a></li>
-	{% endfor %}
-</ul>
-</section>
+	<section class="flex wide">
+		<h3>All Words</h3>
+		<ul>
+			{% for word in words %}
+			<li><a href="{% url 'hilichurlian_database:filter_strict' %}?words={{word}}">{{ word }}</a></li>
+			{% endfor %}
+		</ul>
+	</section>
 </div>
 {% endblock %}
