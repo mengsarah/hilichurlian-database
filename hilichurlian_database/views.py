@@ -182,13 +182,14 @@ def filter_strict(request):
 
 # the /select page
 def view_all_criteria(request):
-	sources = Source.objects.all()
-	speakers = Speaker.objects.all()
-	words = Word.objects.all()
+	sources = Source.objects.order_by('name')
+	speakers = Speaker.objects.order_by('type', 'name')
+	words = Word.objects.order_by('word')
 	return render(request, "hilichurlian_database/select.html", {
 		'sources': sources,
 		'speakers': speakers,
 		'words': words,
+		'speaker_types': Speaker.SPEAKER_TYPES,
 	})
 
 # the /about page
