@@ -189,7 +189,10 @@ def view_all_criteria(request):
 		'sources': sources,
 		'speakers': speakers,
 		'words': words,
-		'speaker_types': Speaker.SPEAKER_TYPES,
+		'speaker_types': [ # use Speaker.SPEAKER_TYPES when we have unknown
+			("hili", "Hilichurl"),
+			("stud", "Student"),
+		]
 	})
 
 # the /about page
