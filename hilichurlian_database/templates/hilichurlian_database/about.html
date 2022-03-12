@@ -13,8 +13,14 @@
 <p>Unordered to-do list:</p>
 <ul>
 	<li>get an actual color scheme</li>
-	<li>API or something</li>
 	<li>padding/margins (see front page)</li>
+	<li>API or something</li>
+	<li>option to view cells in bigger boxes
+		<ul>
+			<li>option to view an entire row on its own page or overlay box or something</li>
+			<li>option to view an individual cell in an overlay box or expand the cell or something (fallback: view entire row on its own page)</li>
+		</ul>
+	</li>
 	<li>filter by Hilichurlian word
 		<ul>
 			<li>filter not by exact word (e.g. to pick up all instances of <i>mimi</i> when looking for <i>mi</i> if so desired)</li>
@@ -37,6 +43,7 @@
 			<li>for series of books with multiple volumes, they should be searchable separately and together</li>
 		</ul>
 	</li>
+	<li>add "Related words/sources" aside to results of exact search</li>
 	<li>don't think these would be of much help, but may as well also filter by translation sources and words in translations</li>
 	<li>add "Viewing results X to Y out of Z total results"</li>
 	<li>user-friendly way of specifying page size
@@ -45,13 +52,6 @@
 			<li>buttons with sample/preset values</li>
 		</ul>
 	</li>
-	<li>option to view cells in bigger boxes
-		<ul>
-			<li>option to view an entire row on its own page or overlay box or something</li>
-			<li>option to view an individual cell in an overlay box or expand the cell or something (fallback: view entire row on its own page)</li>
-		</ul>
-	</li>
-	<li>maybe if the screen is narrow, then the rows and columns swap? not sure if that's a good idea, but my thinking is that all the data for a normal row can fit on a narrow screen if the row is a column instead, and horizontal scrolling will mean looking at what would normally be new rows instead</li>
 	<li>form validation (e.g. pageSize should be a positive integer)</li>
 </ul>
 
@@ -59,16 +59,16 @@
 <ul>
 	<li>new field "version" to show which utterances have been available since which versions of the game (Ella has apparently improved over time, but some of her old dialogue is not updated)</li>
 	<li>display lists of all words, speakers, sources; let them link to queries</li>
-	<li>filter by source (currently exact URLs only)</li>
-	<li>filter by speaker (currently exact speaker only)</li>
+	<li>text field to specify custom page size</li>
+	<li>condensed pagination</li>
 	<li>filter by Hilichurlian word
 		<ul>
 			<li>filter by exact word (e.g. to avoid picking up all instances of <i>mita</i> when looking for just <i>mi</i>)</li>
 			<li>filter by multiple words (e.g. all utterances with both <i>mosi</i> and <i>mita</i>; any separator other than letters)</li>
 		</ul>
 	</li>
-	<li>condensed pagination</li>
-	<li>text field to specify custom page size</li>
+	<li>filter by source (currently exact URLs only)</li>
+	<li>filter by speaker (currently exact speaker only)</li>
 </ul>
 
 {% endblock %}
