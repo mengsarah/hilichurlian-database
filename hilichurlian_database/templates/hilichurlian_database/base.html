@@ -19,21 +19,23 @@
 		<a href="{% url 'hilichurlian_database:select' %}">View All Criteria</a>
 	</nav>
 
-	{% if messages %}
-	<section>
-		<h2>Information</h2>
-		<ul class="messages">
-			{% for message in messages %}
-			<li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-			{% endfor %}
-		</ul>
-	</section>
-	{% endif %}
+	<main>
+		{% if messages %}
+		<section>
+			<h2>Information</h2>
+			<ul class="messages">
+				{% for message in messages %}
+				<li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+				{% endfor %}
+			</ul>
+		</section>
+		{% endif %}
 
-	<section>
-		{% block content %}
-		{% endblock %}
-	</section>
+		<section>
+			{% block content %}
+			{% endblock %}
+		</section>
+	</main>
 
 	<footer>
 		<img src="{% static 'hilichurlian_database/hilichurls.png' %}" alt="Three Hilichurls: one sleeping, one chilling, and one sweating while holding a Pyro Slime." />
