@@ -184,7 +184,7 @@ def filter_strict(request):
 def view_all_criteria(request):
 	sources = Source.objects.all()
 	speakers = Speaker.objects.all()
-	words = CompleteUtterance.objects.all()
+	words = Word.objects.all()
 	return render(request, "hilichurlian_database/select.html", {
 		'sources': sources,
 		'speakers': speakers,
