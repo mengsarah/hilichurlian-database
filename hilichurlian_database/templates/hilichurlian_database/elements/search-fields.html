@@ -7,7 +7,7 @@
 		<input type="text" id="search-words" name="words" value="{{criteria.words|default:''}}" />
 	</div>
 	<div class="form-field subfield">
-		<input type="checkbox" id="search-words-similar" name="wordsSimilar" />
+		<input type="checkbox" id="search-words-similar" name="similar" value="yes" {{ similar_checked }} />
 		<label for="search-words-similar">Also search for similar words</label>
 	</div>
 	<div class="form-field">
