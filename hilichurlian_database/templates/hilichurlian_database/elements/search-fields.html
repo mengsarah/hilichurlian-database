@@ -6,6 +6,10 @@
 		<label for="search-words">Hilichurlian words</label>
 		<input type="text" id="search-words" name="words" value="{{criteria.words|default:''}}" />
 	</div>
+	<div class="form-field subfield">
+		<input type="checkbox" id="search-words-similar" name="wordsSimilar" />
+		<label for="search-words-similar">Also search for similar words</label>
+	</div>
 	<div class="form-field">
 		<label for="search-speaker">Speaker (case sensitive)</label>
 		<input type="text" id="search-speaker" name="speaker" value="{{criteria.speaker|default:''}}" />
