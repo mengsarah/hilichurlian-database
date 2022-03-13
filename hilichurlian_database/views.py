@@ -45,7 +45,7 @@ def make_criteria_message(words_as_string, words_list, speaker, source):
 	return str(criteria)[1:-1]
 
 # return the context object for the pages when browsing the database
-def database_public_view_context(paginator, page_num, page_size, words="", speaker="", source=""):
+def database_public_view_context(paginator, page_num, page_size, words="", similar = "", speaker="", source=""):
 	existing_criteria = "pageSize=" + str(page_size) + "&words=" + words + "&similar=" + similar + "&speaker=" + speaker + "&source=" + source
 	return {
 		'db_page': paginator.get_page(page_num),
@@ -54,6 +54,7 @@ def database_public_view_context(paginator, page_num, page_size, words="", speak
 		'page_size': page_size,
 		'criteria': {
 			'words': words,
+			'similar': similar,
 			'speaker': speaker,
 			'source': source,
 		},
@@ -147,19 +148,32 @@ def filter(request):
 	# initialize search parameters:
 	# text from user: searchWords (multiple), searchSpeaker (1), searchSource (1)
 	# and searchSet is either searchAll (default) or searchSubset
-	words_as_string = req.get('words', "").strip()
-	words_list = re.findall(r'\w+', words_as_string.lower()) # like in add_data()
+	similar = req.get('similar', "").strip()
 	speaker = req.get('speaker', "").strip()
 	source = req.get('source', "").strip()
 	new_search = req.get('newSearch', "no")
+	# get desired words
+	words_as_string = req.get('words', "").strip()
+	words_list = re.findall(r'\w+', words_as_string.lower()) # like in add_data()
+	if similar:
+		similar_words = {}
+		for w in words_list:
+			similar_words[w] = Word.objects.get(word=w).variants_same_word
 	# get utterances within search_set that match speaker and source
 	if speaker != "":
 		utterances = utterances.filter(speaker__name=speaker)
 	if source != "":
 		utterances = utterances.filter(source__url=source)
 	# now that the set is smaller, get utterances that have all of the words
-	for w in words_list:
-		utterances = utterances.filter(words=w)
+	if similar:
+		# get sets for first word and its similar words
+		# then within each of those sets, get sets for second word and its similar words
+		# and so on...
+		# would be particularly terrifying on a large database
+		similar = similar # placeholder to remove empty if error
+	else:
+		for w in words_list:
+			utterances = utterances.filter(words=w)
 	# add info about search
 	criteria_message = make_criteria_message(words_as_string, words_list, speaker, source)
 	if len(words_list) == 0 and len(speaker) == 0 and len(source) == 0:
@@ -179,7 +193,7 @@ def filter(request):
 	return render(
 		request,
 		"hilichurlian_database/results.html",
-		database_public_view_context(paging, page, page_size, words_as_string, speaker, source)
+		database_public_view_context(paging, page, page_size, words_as_string, similar, speaker, source)
 	)
 
 # the /select page
