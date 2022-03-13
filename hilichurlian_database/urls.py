@@ -9,7 +9,7 @@ urlpatterns = [
 	path('view', views.index, name='view'),
 	path('about', views.about, name='about'),
 	path('select', views.view_all_criteria, name='select'),
-	path('filter', views.filter_strict, name='filter_strict'),
+	path('filter', views.filter, name='filter'),
 	# submissions are only ever temporarily open:
 	# path('submit', views.data_entry, name='data_entry'),
 	# for POST

@@ -1,6 +1,6 @@
 {% include "hilichurlian_database/elements/search-fields.html" %}
 
-<form id="page-size" method="GET" action="{% if criteria %}{% url 'hilichurlian_database:filter_strict' %}{% else %}{% url 'hilichurlian_database:view' %}{% endif %}">
+<form id="page-size" method="GET" action="{% if criteria %}{% url 'hilichurlian_database:filter' %}{% else %}{% url 'hilichurlian_database:view' %}{% endif %}">
 	{% for criterion, value in criteria.items %}
 		<input type="hidden" name="{{criterion}}" value="{{value|default:''}}" />
 	{% endfor %}

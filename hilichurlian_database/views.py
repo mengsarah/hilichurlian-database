@@ -134,7 +134,7 @@ def index(request):
 	)
 
 # for searching
-def filter_strict(request):
+def filter(request):
 	req = request.GET
 	# initialize general parameters
 	utterances = CompleteUtterance.objects.all() # to be updated

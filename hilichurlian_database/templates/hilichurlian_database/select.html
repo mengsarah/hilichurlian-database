@@ -13,7 +13,7 @@
 		<h3>All Sources</h3>
 		<ul>
 			{% for source in sources %}
-			<li><a href="{% url 'hilichurlian_database:filter_strict' %}?source={{source.url}}">{{ source }}</a></li>
+			<li><a href="{% url 'hilichurlian_database:filter' %}?source={{source.url}}">{{ source }}</a></li>
 			{% endfor %}
 		</ul>
 	</section>
@@ -26,7 +26,7 @@
 		<h4>{% if type.1 != "Unknown" %}{{ type.1 }}{% else %}Other{% endif %}</h4>
 		<ul>
 			{% for speaker in speakers %}{% if speaker.type == type.0 %}
-			<li><a href="{% url 'hilichurlian_database:filter_strict' %}?speaker={{speaker}}">{{ speaker }}</a></li>
+			<li><a href="{% url 'hilichurlian_database:filter' %}?speaker={{speaker}}">{{ speaker }}</a></li>
 			{% endif %}{% endfor %}
 		</ul>
 		</div>
@@ -38,7 +38,7 @@
 		<h3>All Words</h3>
 		<ul>
 			{% for word in words %}
-			<li><a href="{% url 'hilichurlian_database:filter_strict' %}?words={{word}}">{{ word }}</a></li>
+			<li><a href="{% url 'hilichurlian_database:filter' %}?words={{word}}">{{ word }}</a></li>
 			{% endfor %}
 		</ul>
 	</section>
