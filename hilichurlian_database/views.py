@@ -46,6 +46,7 @@ def make_criteria_message(words_as_string, words_list, speaker, source):
 
 # return the context object for the pages when browsing the database
 def database_public_view_context(paginator, page_num, page_size, words="", speaker="", source=""):
+	existing_criteria = "pageSize=" + str(page_size) + "&words=" + words + "&similar=" + similar + "&speaker=" + speaker + "&source=" + source
 	return {
 		'db_page': paginator.get_page(page_num),
 		'page_range': paginator.get_elided_page_range(page_num, on_each_side=2, on_ends=3),
@@ -56,6 +57,7 @@ def database_public_view_context(paginator, page_num, page_size, words="", speak
 			'speaker': speaker,
 			'source': source,
 		},
+		'existing': existing_criteria,
 	}
 
 
