@@ -106,8 +106,9 @@ footer .text {
 	max-width: 70%;
 }
 
-form {
-	margin: 0.5rem auto;
+.container.flex {
+	display: flex;
+	flex-wrap: wrap;
 }
 
 /* DATABASE TABLE NAV */
@@ -182,11 +183,6 @@ tr.row-lighter td {
 
 /* VIEW ALL CRITERIA/SELECT PAGE */
 
-.container.flex {
-	display: flex;
-	flex-wrap: wrap;
-}
-
 .flex.thin, .flex.medium, .flex.wide {
 	margin-left: 0.5rem;
 	margin-right: 0.5rem;
@@ -217,6 +213,10 @@ tr.row-lighter td {
 
 /* FORMS */
 
+form {
+	margin: 0.5rem auto;
+}
+
 .field-required {
 	font-weight: bold;
 }
@@ -225,23 +225,52 @@ tr.row-lighter td {
 	content: " (required)";
 }
 
+.long-form, .form-field {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: flex-start;
+	gap: 2rem;
+}
+
+.long-form {
+	flex-direction: column;
+}
+
 .long-form .form-field {
 	margin: 0.5rem auto;
 }
 
-.long-form input[type="text"], .long-form textarea {
-	width: 65%;
+/* first "column"  */
+.form-field label {
+	min-width: 13rem;
+	max-width: 13rem;
+	flex: 2;
+	text-align: right;
 }
 
-.long-form label {
-	display: inline-block;
-	text-align: center;
-	vertical-align: top;
-	min-width: 30%;
+/* need a better name for "subfield" */
+.form-field.subfield {
+	margin-left: 15rem; /* column 1 width + container's gap */
+	gap: 0.5rem;
+}
+.subfield label {
+	text-align: left;
+	width: fit-content;
 }
 
-#search-form label {
-	min-width: 20%;
+/* second "column" */
+.form-field input, .form-field textarea, .form-field select {
+	min-width: 16rem;
+	max-width: 40rem;
+	flex: 5;
+}
+
+/* reset widths */
+input[type="checkbox"], .form-field select {
+	max-width: max-content;
+}
+input[type="checkbox"] {
+	min-width: max-content;
 }
 
 /* MEDIA QUERIES */
@@ -255,31 +284,32 @@ tr.row-lighter td {
 
 	/* VIEW ALL CRITERIA/SELECT PAGE */
 	.container.flex {
-		display: block;
+		flex-direction: column;
 	}
 	.flex.wide ul {
 		column-count: 2;
 	}
 
 	/* FORMS */
-	.long-form label, #search-form label {
-		display: block;
+	.form-field {
+		flex-direction: column;
+		gap: initial;
+	}
+
+	.form-field.subfield {
+		flex-direction: row; /* for checkbox, not any subfield */
+		margin-left: initial;
+	}
+
+	.form-field > label {
 		text-align: left;
 	}
 
 	.long-form input[type="text"], .long-form textarea {
+		min-width: 5rem;
 		width: 100%;
 	}
 }
 
 /* large screens/small text */
-@media (min-width: 60rem) {
-	/* FORMS */
-	.long-form label, #search-form label {
-		min-width: 16%;
-	}
-
-	.long-form input[type="text"], .long-form textarea {
-		width: 70%;
-	}
-}
+/* @media (min-width: 60rem) {} */
