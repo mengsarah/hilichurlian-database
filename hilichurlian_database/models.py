@@ -98,6 +98,7 @@ class Word(models.Model):
 		primary_key = True,
 		help_text = "Must be a word that can be found in an utterance."
 	)
+	# TODO: if wordA's variants_same_word includes wordB and variants_grammatical includes wordC, then wordB's variants_grammatical should also include wordC, right?
 	variants_same_word = models.ManyToManyField(
 		"self",
 		verbose_name = "other written forms of this word",

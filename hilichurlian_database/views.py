@@ -34,6 +34,9 @@ def get_forms():
 		{ "form_object": SpeakerForm(), "name": "speaker", }
 	]
 
+def remove_duplicates(may_have_duplicates):
+	return list(set(may_have_duplicates))
+
 def make_criteria_message(words_as_string, words_list, speaker, source):
 	criteria = []
 	if len(words_list) > 0:
@@ -140,43 +143,57 @@ def index(request):
 def filter(request):
 	req = request.GET
 	# initialize general parameters
-	utterances = CompleteUtterance.objects.all() # to be updated
 	page = req.get('page', 1)
 	page_size = req.get('pageSize', DEFAULT_PAGE_SIZE)
 	if int(page_size) < 1:
 		page_size = 1
+	# initialize parameters to be updated
+	utterances = CompleteUtterance.objects.all() # to be updated
+	same_variants = {} # to be updated
+	grammatical_variants = {} # to be updated
+	all_variants = {}
 	# initialize search parameters
-	similar = req.get('similar', "").strip()
+	want_grammatical_variants = req.get('grammaticalVariants', "").strip()
 	speaker = req.get('speaker', "").strip()
 	source = req.get('source', "").strip()
 	new_search = req.get('newSearch', "")
-	similar_words = {} # to be updated
 	# get desired words
 	words_as_string = req.get('words', "").strip() # TODO: regenerate after modifications to words_list
 	words_list = re.findall(r'\w+', words_as_string.lower()) # like in add_data()
-	# TODO above: remove dupes from words_list
-	# TODO below: use boolean for whether similar words exist?
-	# USING variants_same_word SHOULD BE DEFAULT; "SIMILAR" SHOULD BE variants_grammatical (and also named to something clearer than "similar")
-	if similar:
-		for w in words_list:
-			try:
-				similar_words[w] = Word.objects.get(word=w).variants_same_word.all()
-			except Word.DoesNotExist:
-				words_list.remove(w) # TODO: display user's search criteria that aren't found in the DB
-			if similar_words[w] == Word.objects.none():
-				similar_words.pop(w)
+	words_list = remove_duplicates(words_list)
 	# get utterances within search_set that match speaker and source
 	if speaker:
 		utterances = utterances.filter(speaker__name=speaker)
 	if source:
 		utterances = utterances.filter(source__url=source)
 	# now that the set is smaller, get utterances that have all of the words
-	if similar_words:
-		# TODO: handle case where word variations are specifically specified? should they both be required or should they be handled as if only one were entered?
-		# USING variants_same_word SHOULD BE DEFAULT; "SIMILAR" SHOULD BE variants_grammatical (and also named to something clearer than "similar")
+	# TODO: use boolean for whether grammatical variants exist?
+	# TODO: if wordA's variants_same_word includes wordB and variants_grammatical includes wordC, then wordB's variants_grammatical should also include wordC, but it's not enforced right now
+	if want_grammatical_variants:
 		for w in words_list:
-			all_word_utters = CompleteUtterance.objects.filter(words__in=(similar_words[w].union(Word.objects.filter(word=w))))
-			messages.info(request, similar_words)
+			try:
+				grammatical_variants[w] = Word.objects.get(word=w).variants_grammatical.all()
+			except Word.DoesNotExist:
+				words_list.remove(w) # TODO: display user's search criteria that aren't found in the DB
+			if grammatical_variants[w] == Word.objects.none():
+				grammatical_variants.pop(w)
+	for w in words_list:
+		try:
+			same_variants[w] = Word.objects.get(word=w).variants_same_word.all()
+		except Word.DoesNotExist:
+			words_list.remove(w) # TODO: display user's search criteria that aren't found in the DB
+		if same_variants[w] == Word.objects.none():
+			same_variants.pop(w)
+	variants = same_variants
+	for word, vars in grammatical_variants.items():
+		if same_variants[word]:
+			variants[word] = grammatical_variants[word].union(same_variants[word])
+		else:
+			variants[word] = grammatical_variants[word]
+	if variants:
+		# TODO: handle case where word variations are specifically specified? should they both be required or should they be handled as if only one were entered?
+		for w in words_list:
+			all_word_utters = CompleteUtterance.objects.filter(words__in=(variants[w].union(Word.objects.filter(word=w))))
 			utterances = utterances.intersection(all_word_utters)
 			if not utterances.exists():
 				break
@@ -205,7 +222,7 @@ def filter(request):
 	return render(
 		request,
 		"hilichurlian_database/results.html",
-		database_public_view_context(paging, page, page_size, words_as_string, similar, speaker, source)
+		database_public_view_context(paging, page, page_size, words_as_string, want_grammatical_variants, speaker, source)
 	)
 
 # the /select page

@@ -7,8 +7,8 @@
 		<input type="text" id="search-words" name="words" value="{{criteria.words|default:''}}" />
 	</div>
 	<div class="form-field subfield">
-		<input type="checkbox" id="search-words-similar" name="similar" value="yes" {% if criteria.similar %}checked {% endif %}/>
-		<label for="search-words-similar">Also search for similar words</label>
+		<input type="checkbox" id="search-words-grammatical-variants" name="grammaticalVariants" value="yes" {% if criteria.similar %}checked {% endif %}/>
+		<label for="search-words-grammatical-variants">Also search for probable grammatical variants of these words</label>
 	</div>
 	<div class="form-field">
 		<label for="search-speaker">Speaker (case sensitive)</label>
