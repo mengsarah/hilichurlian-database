@@ -149,13 +149,14 @@ def filter(request):
 	similar = req.get('similar', "").strip()
 	speaker = req.get('speaker', "").strip()
 	source = req.get('source', "").strip()
-	new_search = req.get('newSearch', "no")
+	new_search = req.get('newSearch', "")
 	similar_words = {} # to be updated
 	# get desired words
 	words_as_string = req.get('words', "").strip() # TODO: regenerate after modifications to words_list
 	words_list = re.findall(r'\w+', words_as_string.lower()) # like in add_data()
 	# TODO above: remove dupes from words_list
 	# TODO below: use boolean for whether similar words exist?
+	# USING variants_same_word SHOULD BE DEFAULT; "SIMILAR" SHOULD BE variants_grammatical (and also named to something clearer than "similar")
 	if similar:
 		for w in words_list:
 			try:
@@ -165,13 +166,14 @@ def filter(request):
 			if similar_words[w] == Word.objects.none():
 				similar_words.pop(w)
 	# get utterances within search_set that match speaker and source
-	if speaker != "":
+	if speaker:
 		utterances = utterances.filter(speaker__name=speaker)
-	if source != "":
+	if source:
 		utterances = utterances.filter(source__url=source)
 	# now that the set is smaller, get utterances that have all of the words
 	if similar_words:
 		# TODO: handle case where word variations are specifically specified? should they both be required or should they be handled as if only one were entered?
+		# USING variants_same_word SHOULD BE DEFAULT; "SIMILAR" SHOULD BE variants_grammatical (and also named to something clearer than "similar")
 		for w in words_list:
 			all_word_utters = CompleteUtterance.objects.filter(words__in=(similar_words[w].union(Word.objects.filter(word=w))))
 			messages.info(request, similar_words)
@@ -188,14 +190,14 @@ def filter(request):
 	criteria_message = make_criteria_message(words_as_string, words_list, speaker, source)
 	if len(words_list) == 0 and len(speaker) == 0 and len(source) == 0:
 		utterances = CompleteUtterance.objects.all()
-		if new_search == "yes":
+		if new_search:
 			messages.error(request, "Please enter a word, speaker, or source to search.")
 	elif not utterances.exists():
 		utterances = CompleteUtterance.objects.all()
-		if new_search == "yes":
+		if new_search:
 			messages.error(request, "No utterances found that satisfy all of the following criteria: " + criteria_message)
 	else: # utterances.exists() is True
-		if new_search == "yes":
+		if new_search:
 			messages.success(request, "Successfully found utterances that satisfy all of the following criteria: " + criteria_message)
 		else:
 			messages.info(request, "Showing utterances that satisfy all of the following criteria: " + criteria_message)
