@@ -149,6 +149,7 @@ def filter(request):
 	# text from user: searchWords (multiple), searchSpeaker (1), searchSource (1)
 	# and searchSet is either searchAll (default) or searchSubset
 	similar = req.get('similar', "").strip()
+	similar_words = {} # to be updated
 	speaker = req.get('speaker', "").strip()
 	source = req.get('source', "").strip()
 	new_search = req.get('newSearch', "no")
@@ -156,24 +157,41 @@ def filter(request):
 	words_as_string = req.get('words', "").strip()
 	words_list = re.findall(r'\w+', words_as_string.lower()) # like in add_data()
 	if similar:
-		similar_words = {}
 		for w in words_list:
-			similar_words[w] = Word.objects.get(word=w).variants_same_word
+			try:
+				similar_words[w] = Word.objects.get(word=w).variants_same_word
+			except Word.DoesNotExist:
+				words_list.remove(w) # TODO: display user's search criteria that aren't found in the DB
 	# get utterances within search_set that match speaker and source
 	if speaker != "":
 		utterances = utterances.filter(speaker__name=speaker)
 	if source != "":
 		utterances = utterances.filter(source__url=source)
 	# now that the set is smaller, get utterances that have all of the words
-	if similar:
+	if similar_words:
+		# method 1:
 		# get sets for first word and its similar words
 		# then within each of those sets, get sets for second word and its similar words
 		# and so on...
-		# would be particularly terrifying on a large database
+		# would be particularly terrifying on a large database or a database where the utterances are filled to the brim with words and their similar versions where each result set is nearly the same (too many excess calls)
+		# would scale horribly; shouldn't be an issue with the Hilichurlian DB since it's small, but still...
+
+		# method 2: process of elimination on entire database instead, can't get any worse than O(n) even if it also can't get any better than O(n) hahaha
+
+		# method 3:
+		# make new words_list that has all words and their variations,
+		# then get all utterances with at least one word in the new words_list,
+		# then process of elimination as we go down the original words_list and each word's variations
+		# wait isn't this just method 2
+
+		# one optimization method could be to validate if the user entered.... more words than actually exist in the database
 		similar = similar # placeholder to remove empty if error
 	else:
+		# could be optimized, maybe similar to if similar block (ha)
 		for w in words_list:
 			utterances = utterances.filter(words=w)
+			if not utterances.exists():
+				break
 	# add info about search
 	criteria_message = make_criteria_message(words_as_string, words_list, speaker, source)
 	if len(words_list) == 0 and len(speaker) == 0 and len(source) == 0:
