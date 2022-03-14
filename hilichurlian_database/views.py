@@ -145,23 +145,25 @@ def filter(request):
 	page_size = req.get('pageSize', DEFAULT_PAGE_SIZE)
 	if int(page_size) < 1:
 		page_size = 1
-	# initialize search parameters:
-	# text from user: searchWords (multiple), searchSpeaker (1), searchSource (1)
-	# and searchSet is either searchAll (default) or searchSubset
+	# initialize search parameters
 	similar = req.get('similar', "").strip()
-	similar_words = {} # to be updated
 	speaker = req.get('speaker', "").strip()
 	source = req.get('source', "").strip()
 	new_search = req.get('newSearch', "no")
+	similar_words = {} # to be updated
 	# get desired words
-	words_as_string = req.get('words', "").strip()
+	words_as_string = req.get('words', "").strip() # TODO: regenerate after modifications to words_list
 	words_list = re.findall(r'\w+', words_as_string.lower()) # like in add_data()
+	# TODO above: remove dupes from words_list
+	# TODO below: use boolean for whether similar words exist?
 	if similar:
 		for w in words_list:
 			try:
-				similar_words[w] = Word.objects.get(word=w).variants_same_word
+				similar_words[w] = Word.objects.get(word=w).variants_same_word.all()
 			except Word.DoesNotExist:
 				words_list.remove(w) # TODO: display user's search criteria that aren't found in the DB
+			if similar_words[w] == Word.objects.none():
+				similar_words.pop(w)
 	# get utterances within search_set that match speaker and source
 	if speaker != "":
 		utterances = utterances.filter(speaker__name=speaker)
@@ -169,23 +171,13 @@ def filter(request):
 		utterances = utterances.filter(source__url=source)
 	# now that the set is smaller, get utterances that have all of the words
 	if similar_words:
-		# method 1:
-		# get sets for first word and its similar words
-		# then within each of those sets, get sets for second word and its similar words
-		# and so on...
-		# would be particularly terrifying on a large database or a database where the utterances are filled to the brim with words and their similar versions where each result set is nearly the same (too many excess calls)
-		# would scale horribly; shouldn't be an issue with the Hilichurlian DB since it's small, but still...
-
-		# method 2: process of elimination on entire database instead, can't get any worse than O(n) even if it also can't get any better than O(n) hahaha
-
-		# method 3:
-		# make new words_list that has all words and their variations,
-		# then get all utterances with at least one word in the new words_list,
-		# then process of elimination as we go down the original words_list and each word's variations
-		# wait isn't this just method 2
-
-		# one optimization method could be to validate if the user entered.... more words than actually exist in the database
-		similar = similar # placeholder to remove empty if error
+		# TODO: handle case where word variations are specifically specified? should they both be required or should they be handled as if only one were entered?
+		for w in words_list:
+			all_word_utters = CompleteUtterance.objects.filter(words__in=(similar_words[w].union(Word.objects.filter(word=w))))
+			messages.info(request, similar_words)
+			utterances = utterances.intersection(all_word_utters)
+			if not utterances.exists():
+				break
 	else:
 		# could be optimized, maybe similar to if similar block (ha)
 		for w in words_list:
