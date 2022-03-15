@@ -150,62 +150,41 @@ def filter(request):
 		page_size = 1
 	# initialize parameters to be updated
 	utterances = CompleteUtterance.objects.all() # to be updated
-	same_variants = {} # to be updated
-	grammatical_variants = {} # to be updated
-	all_variants = {}
+	all_variants = {} # to be updated
 	# initialize search parameters
 	want_grammatical_variants = req.get('grammaticalVariants', "").strip()
 	speaker = req.get('speaker', "").strip()
 	source = req.get('source', "").strip()
 	new_search = req.get('newSearch', "")
-	# get entered words
 	words_as_string = req.get('words', "").strip()
 	words_list = re.findall(r'\w+', words_as_string.lower()) # like in add_data()
-	words_list = remove_duplicates(words_list)
 	# get utterances within search_set that match speaker and source
 	if speaker:
 		utterances = utterances.filter(speaker__name=speaker)
 	if source:
 		utterances = utterances.filter(source__url=source)
 	# now that the set is smaller, get utterances that have all of the words
-	# TODO: use boolean for whether grammatical variants exist?
-	# TODO: if wordA's variants_same_word includes wordB and variants_grammatical includes wordC, then wordB's variants_grammatical should also include wordC, but it's not enforced right now
-	original_words_list = remove_duplicates(words_list)
-	if want_grammatical_variants:
-		for w in original_words_list:
-			try:
-				grammatical_variants[w] = Word.objects.get(word=w).variants_grammatical.all()
-				if grammatical_variants[w] == Word.objects.none():
-					grammatical_variants.pop(w)
-			except Word.DoesNotExist:
-				words_list.remove(w) # TODO: display user's search criteria that aren't found in the DB
-	original_words_list = remove_duplicates(words_list)
+	# TODO: if wordA's variants_same_word includes wordB and variants_grammatical includes wordC, then wordB's variants_grammatical should also include wordC, but that's not enforced in models.py and views.py
+	# get words to be searched for
+	words_list = remove_duplicates(words_list)
+	original_words_list = list(words_list)
 	for w in original_words_list:
+		w_object = w
 		try:
-			same_variants[w] = Word.objects.get(word=w).variants_same_word.all()
-			if same_variants[w] == Word.objects.none():
-				same_variants.pop(w)
+			w_object = Word.objects.get(word=w)
 		except Word.DoesNotExist:
 			words_list.remove(w) # TODO: display user's search criteria that aren't found in the DB
-	all_variants = same_variants
-	for word, vars in grammatical_variants.items():
-		if same_variants[word]:
-			all_variants[word] = grammatical_variants[word].union(same_variants[word])
-		else:
-			all_variants[word] = grammatical_variants[word]
-	if all_variants:
-		# TODO: handle case where word variations are specifically specified? should they both be required or should they be handled as if only one were entered?
-		for w in words_list:
-			all_word_utters = CompleteUtterance.objects.filter(words__in=(all_variants[w].union(Word.objects.filter(word=w))))
-			utterances = utterances.intersection(all_word_utters)
-			if not utterances.exists():
-				break
-	else:
-		# could be optimized, maybe similar to if similar block (ha)
-		for w in words_list:
-			utterances = utterances.filter(words=w)
-			if not utterances.exists():
-				break
+			continue
+		all_variants[w] = w_object.variants_same_word.union(Word.objects.filter(word=w)) # Words are currently not variants of themselves
+		if want_grammatical_variants and w_object.variants_grammatical.exists():
+			all_variants[w] = all_variants[w].union(w_object.variants_grammatical.all())
+	# now search utterances for the words
+	# TODO: possibly handle case where grammatical variations are specifically specified (e.g. user enters "mi mimi") so that anything the user enters is required
+	for w in words_list:
+		all_word_utters = CompleteUtterance.objects.filter(words__in=(all_variants[w]))
+		utterances = utterances.intersection(all_word_utters)
+		if not utterances.exists():
+			break
 	# regenerate words_as_string
 	words_as_string = ""
 	for w in words_list:
