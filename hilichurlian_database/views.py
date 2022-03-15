@@ -34,8 +34,9 @@ def get_forms():
 		{ "form_object": SpeakerForm(), "name": "speaker", }
 	]
 
+# keep order
 def remove_duplicates(may_have_duplicates):
-	return list(set(may_have_duplicates))
+	return list(dict.fromkeys(may_have_duplicates))
 
 def make_criteria_message(words_as_string, words_list, speaker, source):
 	criteria = []
@@ -157,8 +158,8 @@ def filter(request):
 	speaker = req.get('speaker', "").strip()
 	source = req.get('source', "").strip()
 	new_search = req.get('newSearch', "")
-	# get desired words
-	words_as_string = req.get('words', "").strip() # TODO: regenerate after modifications to words_list
+	# get entered words
+	words_as_string = req.get('words', "").strip()
 	words_list = re.findall(r'\w+', words_as_string.lower()) # like in add_data()
 	words_list = remove_duplicates(words_list)
 	# get utterances within search_set that match speaker and source
@@ -169,31 +170,33 @@ def filter(request):
 	# now that the set is smaller, get utterances that have all of the words
 	# TODO: use boolean for whether grammatical variants exist?
 	# TODO: if wordA's variants_same_word includes wordB and variants_grammatical includes wordC, then wordB's variants_grammatical should also include wordC, but it's not enforced right now
+	original_words_list = remove_duplicates(words_list)
 	if want_grammatical_variants:
-		for w in words_list:
+		for w in original_words_list:
 			try:
 				grammatical_variants[w] = Word.objects.get(word=w).variants_grammatical.all()
 			except Word.DoesNotExist:
 				words_list.remove(w) # TODO: display user's search criteria that aren't found in the DB
 			if grammatical_variants[w] == Word.objects.none():
 				grammatical_variants.pop(w)
-	for w in words_list:
+	original_words_list = remove_duplicates(words_list)
+	for w in original_words_list:
 		try:
 			same_variants[w] = Word.objects.get(word=w).variants_same_word.all()
+			if same_variants[w] == Word.objects.none():
+				same_variants.pop(w)
 		except Word.DoesNotExist:
 			words_list.remove(w) # TODO: display user's search criteria that aren't found in the DB
-		if same_variants[w] == Word.objects.none():
-			same_variants.pop(w)
-	variants = same_variants
+	all_variants = same_variants
 	for word, vars in grammatical_variants.items():
 		if same_variants[word]:
-			variants[word] = grammatical_variants[word].union(same_variants[word])
+			all_variants[word] = grammatical_variants[word].union(same_variants[word])
 		else:
-			variants[word] = grammatical_variants[word]
-	if variants:
+			all_variants[word] = grammatical_variants[word]
+	if all_variants:
 		# TODO: handle case where word variations are specifically specified? should they both be required or should they be handled as if only one were entered?
 		for w in words_list:
-			all_word_utters = CompleteUtterance.objects.filter(words__in=(variants[w].union(Word.objects.filter(word=w))))
+			all_word_utters = CompleteUtterance.objects.filter(words__in=(all_variants[w].union(Word.objects.filter(word=w))))
 			utterances = utterances.intersection(all_word_utters)
 			if not utterances.exists():
 				break
@@ -203,6 +206,11 @@ def filter(request):
 			utterances = utterances.filter(words=w)
 			if not utterances.exists():
 				break
+	# regenerate words_as_string
+	words_as_string = ""
+	for w in words_list:
+		words_as_string = words_as_string + w + " "
+	words_as_string = words_as_string[:-1]
 	# add info about search
 	criteria_message = make_criteria_message(words_as_string, words_list, speaker, source)
 	if len(words_list) == 0 and len(speaker) == 0 and len(source) == 0:
@@ -213,7 +221,7 @@ def filter(request):
 		utterances = CompleteUtterance.objects.all()
 		if new_search:
 			messages.error(request, "No utterances found that satisfy all of the following criteria: " + criteria_message)
-	else: # utterances.exists() is True
+	else: # utterances.exists()
 		if new_search:
 			messages.success(request, "Successfully found utterances that satisfy all of the following criteria: " + criteria_message)
 		else:
