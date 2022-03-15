@@ -175,10 +175,10 @@ def filter(request):
 		for w in original_words_list:
 			try:
 				grammatical_variants[w] = Word.objects.get(word=w).variants_grammatical.all()
+				if grammatical_variants[w] == Word.objects.none():
+					grammatical_variants.pop(w)
 			except Word.DoesNotExist:
 				words_list.remove(w) # TODO: display user's search criteria that aren't found in the DB
-			if grammatical_variants[w] == Word.objects.none():
-				grammatical_variants.pop(w)
 	original_words_list = remove_duplicates(words_list)
 	for w in original_words_list:
 		try:
