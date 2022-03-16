@@ -34,8 +34,8 @@ def get_forms():
 		{ "form_object": SpeakerForm(), "name": "speaker", }
 	]
 
-# keep order
 def remove_duplicates(may_have_duplicates):
+	# keep order
 	return list(dict.fromkeys(may_have_duplicates))
 
 def make_criteria_message(words_as_string, words_list, speaker, source):
@@ -149,8 +149,9 @@ def filter(request):
 	if int(page_size) < 1:
 		page_size = 1
 	# initialize parameters to be updated
-	utterances = CompleteUtterance.objects.all() # to be updated
-	all_variants = {} # to be updated
+	utterances = CompleteUtterance.objects.all() # results
+	all_variants = {} # word variants
+	not_words = [] # from user's search
 	# initialize search parameters
 	want_grammatical_variants = req.get('grammaticalVariants', "").strip()
 	speaker = req.get('speaker', "").strip()
@@ -158,39 +159,40 @@ def filter(request):
 	new_search = req.get('newSearch', "")
 	words_as_string = req.get('words', "").strip()
 	words_list = re.findall(r'\w+', words_as_string.lower()) # like in add_data()
+	# TODO: if wordA's variants_same_word includes wordB and variants_grammatical includes wordC, then wordB's variants_grammatical should also include wordC, but that's not enforced in models.py and views.py
+	# get words to be searched for
+	words_list = remove_duplicates(words_list)
+	original_words_list = list(words_list)
+	for word_string in original_words_list:
+		word_query = Word.objects.filter(word=word_string)
+		if not word_query.exists():
+			not_words.append(word_string)
+			words_list.remove(word_string)
+			continue
+		word_object = word_query.get()
+		all_variants[word_string] = word_object.variants_same_word.union(Word.objects.filter(word=word_string)) # Words are currently not variants of themselves
+		if want_grammatical_variants and word_object.variants_grammatical.exists():
+			all_variants[word_string] = all_variants[word_string].union(word_object.variants_grammatical.all())
+	# regenerate words_as_string
+	words_as_string = ""
+	for w in words_list:
+		words_as_string = words_as_string + w + " "
+	words_as_string = words_as_string[:-1]
 	# get utterances within search_set that match speaker and source
 	if speaker:
 		utterances = utterances.filter(speaker__name=speaker)
 	if source:
 		utterances = utterances.filter(source__url=source)
 	# now that the set is smaller, get utterances that have all of the words
-	# TODO: if wordA's variants_same_word includes wordB and variants_grammatical includes wordC, then wordB's variants_grammatical should also include wordC, but that's not enforced in models.py and views.py
-	# get words to be searched for
-	words_list = remove_duplicates(words_list)
-	original_words_list = list(words_list)
-	for w in original_words_list:
-		w_object = w
-		try:
-			w_object = Word.objects.get(word=w)
-		except Word.DoesNotExist:
-			words_list.remove(w) # TODO: display user's search criteria that aren't found in the DB
-			continue
-		all_variants[w] = w_object.variants_same_word.union(Word.objects.filter(word=w)) # Words are currently not variants of themselves
-		if want_grammatical_variants and w_object.variants_grammatical.exists():
-			all_variants[w] = all_variants[w].union(w_object.variants_grammatical.all())
-	# now search utterances for the words
-	# TODO: possibly handle case where grammatical variations are specifically specified (e.g. user enters "mi mimi") so that anything the user enters is required
+	# TODO: handle case where grammatical variations are specifically specified (e.g. user enters "mi mimi") so that anything the user enters is required
 	for w in words_list:
 		all_word_utters = CompleteUtterance.objects.filter(words__in=(all_variants[w]))
 		utterances = utterances.intersection(all_word_utters)
 		if not utterances.exists():
 			break
-	# regenerate words_as_string
-	words_as_string = ""
-	for w in words_list:
-		words_as_string = words_as_string + w + " "
-	words_as_string = words_as_string[:-1]
 	# add info about search
+	if not_words:
+		messages.error(request, "The following words are not in the database: " + str(not_words)[1:-1])
 	criteria_message = make_criteria_message(words_as_string, words_list, speaker, source)
 	if len(words_list) == 0 and len(speaker) == 0 and len(source) == 0:
 		utterances = CompleteUtterance.objects.all()
