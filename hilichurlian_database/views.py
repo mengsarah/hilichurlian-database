@@ -1,3 +1,4 @@
+from email import message
 from django.db.models import Q
 from django.shortcuts import render, redirect
 from django.core.paginator import Paginator
@@ -37,6 +38,33 @@ def get_forms():
 def remove_duplicates(may_have_duplicates):
 	# keep order
 	return list(dict.fromkeys(may_have_duplicates))
+
+def generate_message(request, message_type, relevant_values):
+	level_tag = messages.INFO
+	message_text = ""
+	values_html = ""
+	for variable, value in relevant_values.items():
+		values_html = values_html + variable + " - " + str(value) + "; "
+	if values_html:
+		values_html = values_html[:-2]
+
+	if message_type == "successful new search":
+		level_tag = messages.SUCCESS
+		message_text = "Successfully found utterances that satisfy all of the following criteria: " + values_html
+	elif message_type == "showing existing results":
+		level_tag = messages.INFO
+		message_text = "Showing utterances that satisfy all of the following criteria: " + values_html
+	elif message_type == "invalid criteria found":
+		level_tag = messages.ERROR
+		message_text = "The following are not in the database: " + values_html
+	elif message_type == "no results":
+		level_tag = messages.ERROR
+		message_text = "No utterances found that satisfy all of the following criteria: " + values_html
+	elif message_type == "no valid criteria": # either empty or all invalid
+		level_tag = messages.ERROR
+		message_text = "Nothing found. Please enter a word, speaker, or source to search."
+	messages.add_message(request, level_tag, message_text, extra_tags='searched')
+	return
 
 def make_criteria_message(words_as_string, words_list, speaker, source):
 	criteria = []
@@ -191,28 +219,37 @@ def filter(request):
 		if not utterances.exists():
 			break
 	# add info about search
+	nonexistent_values = {}
 	if not_words:
-		messages.error(request, "The following words are not in the database: " + str(not_words)[1:-1])
+		nonexistent_values["words"] = str(not_words)[1:-1]
 	if speaker and not Speaker.objects.filter(name=speaker).exists():
-		messages.error(request, speaker + " is not a speaker in the database.")
+		nonexistent_values["speaker"] = speaker
 		speaker = ""
 	if source and not Source.objects.filter(url=source).exists():
-		messages.error(request, source + " is not a source in the database.")
+		nonexistent_values["source"] = source
 		source = ""
-	criteria_message = make_criteria_message(words_as_string, words_list, speaker, source)
-	if len(words_list) == 0 and len(speaker) == 0 and len(source) == 0:
+	if nonexistent_values:
+		generate_message(request, "invalid criteria found", nonexistent_values)
+	search_values = {}
+	if words_list:
+		search_values["words"] = str(words_list)[1:-1]
+	if speaker:
+		search_values["speaker"] = speaker
+	if source:
+		search_values["source"] = source
+	if not search_values:
 		utterances = CompleteUtterance.objects.all()
 		if new_search:
-			messages.error(request, "Please enter a word, speaker, or source to search.")
+			generate_message(request, "no valid criteria", search_values)
 	elif not utterances.exists():
 		utterances = CompleteUtterance.objects.all()
 		if new_search:
-			messages.error(request, "No utterances found that satisfy all of the following criteria: " + criteria_message)
+			generate_message(request, "no results", search_values)
 	else: # utterances.exists()
 		if new_search:
-			messages.success(request, "Successfully found utterances that satisfy all of the following criteria: " + criteria_message)
+			generate_message(request, "successful new search", search_values)
 		else:
-			messages.info(request, "Showing utterances that satisfy all of the following criteria: " + criteria_message)
+			generate_message(request, "showing existing results", search_values)
 	paging = Paginator(utterances.order_by('source', 'id'), page_size)
 	return render(
 		request,
