@@ -179,9 +179,9 @@ def filter(request):
 		words_as_string = words_as_string + w + " "
 	words_as_string = words_as_string[:-1]
 	# get utterances within search_set that match speaker and source
-	if speaker:
+	if speaker and Speaker.objects.filter(name=speaker).exists():
 		utterances = utterances.filter(speaker__name=speaker)
-	if source:
+	if source and Source.objects.filter(url=source).exists():
 		utterances = utterances.filter(source__url=source)
 	# now that the set is smaller, get utterances that have all of the words
 	# TODO: handle case where grammatical variations are specifically specified (e.g. user enters "mi mimi") so that anything the user enters is required
@@ -193,6 +193,12 @@ def filter(request):
 	# add info about search
 	if not_words:
 		messages.error(request, "The following words are not in the database: " + str(not_words)[1:-1])
+	if speaker and not Speaker.objects.filter(name=speaker).exists():
+		messages.error(request, speaker + " is not a speaker in the database.")
+		speaker = ""
+	if source and not Source.objects.filter(url=source).exists():
+		messages.error(request, source + " is not a source in the database.")
+		source = ""
 	criteria_message = make_criteria_message(words_as_string, words_list, speaker, source)
 	if len(words_list) == 0 and len(speaker) == 0 and len(source) == 0:
 		utterances = CompleteUtterance.objects.all()
