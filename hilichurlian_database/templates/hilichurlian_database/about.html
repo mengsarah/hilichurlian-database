@@ -14,17 +14,11 @@
 <ul>
 	<li>get an actual color scheme</li>
 	<li>figure out page structure</li>
-	<li>API or something</li>
+	<li>API or something, especially now that words are linked together as exact same variants and likely grammatical variants</li>
 	<li>option to view cells in bigger boxes
 		<ul>
 			<li>option to view an entire row on its own page or overlay box or something</li>
 			<li>option to view an individual cell in an overlay box or expand the cell or something (fallback: view entire row on its own page)</li>
-		</ul>
-	</li>
-	<li>filter by Hilichurlian word
-		<ul>
-			<li>filter not by exact word (e.g. to pick up all instances of <i>mimi</i> when looking for <i>mi</i> if so desired)</li>
-			<li>need to associate elongated words with their base word</li>
 		</ul>
 	</li>
 	<li>filter by speaker
@@ -53,6 +47,7 @@
 		</ul>
 	</li>
 	<li>form validation (e.g. pageSize should be a positive integer)</li>
+	<li>un-spaghetti the things that are starting to become spaghetti</li>
 </ul>
 
 <p>Done:</p>
@@ -64,6 +59,7 @@
 	<li>filter by Hilichurlian word
 		<ul>
 			<li>filter by exact word (e.g. to avoid picking up all instances of <i>mita</i> when looking for just <i>mi</i>)</li>
+			<li>filter not by exact word (e.g. to pick up all instances of <i>mimi</i> when looking for <i>mi</i> if so desired); implemented as variants of the same word (e.g. "nya" is the same as "nyaaaa") and likely grammatical variants (e.g. "da" and "dada")</li>
 			<li>filter by multiple words (e.g. all utterances with both <i>mosi</i> and <i>mita</i>; any separator other than letters)</li>
 		</ul>
 	</li>
