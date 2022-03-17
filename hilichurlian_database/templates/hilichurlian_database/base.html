@@ -20,16 +20,16 @@
 	</nav>
 
 	<main>
-		{% if messages %}
+		{% if messages %}{% if message_types.non_search_messages %}
 		<section>
 			<h2>Information</h2>
 			<ul class="messages">
-				{% for message in messages %}
+				{% for message in messages %}{% if "searched" not in message.tags %}
 				<li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-				{% endfor %}
+				{% endif %}{% endfor %}
 			</ul>
 		</section>
-		{% endif %}
+		{% endif %}{% endif %}
 
 		<article>
 			{% block content %}

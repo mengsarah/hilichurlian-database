@@ -41,6 +41,7 @@ def remove_duplicates(may_have_duplicates):
 
 def generate_message(request, message_type, relevant_values):
 	level_tag = messages.INFO
+	extra_tags = ""
 	message_text = ""
 	values_html = ""
 	for variable, value in relevant_values.items():
@@ -50,34 +51,29 @@ def generate_message(request, message_type, relevant_values):
 
 	if message_type == "successful new search":
 		level_tag = messages.SUCCESS
+		extra_tags = "searched"
 		message_text = "Successfully found utterances that satisfy all of the following criteria: " + values_html
 	elif message_type == "showing existing results":
 		level_tag = messages.INFO
+		extra_tags = "searched"
 		message_text = "Showing utterances that satisfy all of the following criteria: " + values_html
 	elif message_type == "invalid criteria found":
 		level_tag = messages.ERROR
+		extra_tags = "searched"
 		message_text = "The following are not in the database: " + values_html
 	elif message_type == "no results":
 		level_tag = messages.ERROR
+		extra_tags = "searched"
 		message_text = "No utterances found that satisfy all of the following criteria: " + values_html
 	elif message_type == "no valid criteria": # either empty or all invalid
 		level_tag = messages.ERROR
+		extra_tags = "searched"
 		message_text = "Nothing found. Please enter a word, speaker, or source to search."
-	messages.add_message(request, level_tag, message_text, extra_tags='searched')
+	messages.add_message(request, level_tag, message_text, extra_tags=extra_tags)
 	return
 
-def make_criteria_message(words_as_string, words_list, speaker, source):
-	criteria = []
-	if len(words_list) > 0:
-		criteria.append(words_as_string)
-	if len(speaker) > 0:
-		criteria.append(speaker)
-	if len(source) > 0:
-		criteria.append(source)
-	return str(criteria)[1:-1]
-
 # return the context object for the pages when browsing the database
-def database_public_view_context(paginator, page_num, page_size, words="", similar = "", speaker="", source=""):
+def database_public_view_context(paginator, page_num, page_size, words="", similar = "", speaker="", source="", message_types={}):
 	existing_criteria = "pageSize=" + str(page_size) + "&words=" + words + "&similar=" + similar + "&speaker=" + speaker + "&source=" + source
 	return {
 		'db_page': paginator.get_page(page_num),
@@ -91,6 +87,7 @@ def database_public_view_context(paginator, page_num, page_size, words="", simil
 			'source': source,
 		},
 		'existing': existing_criteria,
+		'message_types': message_types,
 	}
 
 
@@ -254,7 +251,7 @@ def filter(request):
 	return render(
 		request,
 		"hilichurlian_database/results.html",
-		database_public_view_context(paging, page, page_size, words_as_string, want_grammatical_variants, speaker, source)
+		database_public_view_context(paging, page, page_size, words_as_string, want_grammatical_variants, speaker, source, {"search_messages": "yes"})
 	)
 
 # the /select page
@@ -278,4 +275,8 @@ def about(request):
 
 # the /submit page
 def data_entry(request):
-	return render(request, "hilichurlian_database/submit.html", {'forms': get_forms()})
+	return render(request, "hilichurlian_database/submit.html", {
+		'forms': get_forms(),
+		'message_types': { "non_search_messages": "maybe" },
+		}
+	)

@@ -1,3 +1,15 @@
+<h2>Search</h2>
+
+{% if message_types.search_messages %}
+<section>
+	<ul class="messages">
+		{% for message in messages %}{% if "searched" in message.tags %}
+		<li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+		{% endif %}{% endfor %}
+	</ul>
+</section>
+{% endif %}
+
 <form id="search-form" class="long-form" method="GET" action="{% url 'hilichurlian_database:filter' %}">
 <fieldset>
 	<legend>Search for specific entries (fields may be left blank):</legend>
