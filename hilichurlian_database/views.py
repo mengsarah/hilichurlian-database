@@ -74,7 +74,15 @@ def generate_message(request, message_type, relevant_values):
 
 # return the context object for the pages when browsing the database
 def database_public_view_context(paginator, page_num, page_size, words="", similar = "", speaker="", source="", message_types={}):
-	existing_criteria = "pageSize=" + str(page_size) + "&words=" + words + "&similar=" + similar + "&speaker=" + speaker + "&source=" + source
+	existing_criteria = "pageSize=" + str(page_size)
+	if words:
+		existing_criteria = existing_criteria + "&words=" + words
+	if similar:
+		existing_criteria = existing_criteria + "&similar=" + similar
+	if speaker:
+		existing_criteria = existing_criteria + "&speaker=" + speaker
+	if source:
+		existing_criteria = existing_criteria + "&source=" + source
 	return {
 		'db_page': paginator.get_page(page_num),
 		'page_range': paginator.get_elided_page_range(page_num, on_each_side=2, on_ends=3),
