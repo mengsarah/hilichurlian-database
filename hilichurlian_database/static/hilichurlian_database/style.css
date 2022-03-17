@@ -249,14 +249,14 @@ form {
 	text-align: right;
 }
 
-/* need a better name for "subfield" */
+/* need a better name for "subfield"; currently tailored for checkbox+label */
 .form-field.subfield {
 	margin-left: 15rem; /* column 1 width + container's gap */
 	gap: 0.5rem;
 }
 .subfield label {
 	text-align: left;
-	width: fit-content;
+	max-width: fit-content;
 }
 
 /* second "column" */
@@ -298,7 +298,7 @@ input[type="checkbox"] {
 	}
 
 	.form-field.subfield {
-		flex-direction: row; /* for checkbox, not any subfield */
+		display: block;
 		margin-left: initial;
 	}
 
