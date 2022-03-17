@@ -63,6 +63,7 @@ ul.messages li, div.messages {
 	padding: 0.5rem 1rem;
 	border: 0.2rem solid;
 	border-radius: 0.5rem;
+	margin: 0.5rem 0;
 }
 
 nav {

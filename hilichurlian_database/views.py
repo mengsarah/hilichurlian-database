@@ -124,7 +124,7 @@ def add_data(request, submit_type):
 			if created:
 				new_entry = source_in_db
 			else:
-				messages.info(request, '"' + str(source_in_db) + '" already exists')
+				messages.error(request, '"' + str(source_in_db) + '" already exists')
 		elif submit_type == "speaker":
 			(speaker_in_db, created) = Speaker.objects.get_or_create(
 				name = data['name'],
@@ -135,7 +135,7 @@ def add_data(request, submit_type):
 			if created:
 				new_entry = speaker_in_db
 			else:
-				messages.info(request, '"' + str(speaker_in_db) + '" already exists')
+				messages.error(request, '"' + str(speaker_in_db) + '" already exists')
 		else:
 			messages.error(request, "No data received")
 		if new_entry != submit_type:
