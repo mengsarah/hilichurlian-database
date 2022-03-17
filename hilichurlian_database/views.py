@@ -178,7 +178,7 @@ def filter(request):
 	all_variants = {} # word variants
 	not_words = [] # from user's search
 	# initialize search parameters
-	want_grammatical_variants = req.get('grammaticalVariants', "").strip()
+	want_grammatical_variants = req.get('similar', "").strip()
 	speaker = req.get('speaker', "").strip()
 	source = req.get('source', "").strip()
 	new_search = req.get('newSearch', "")
