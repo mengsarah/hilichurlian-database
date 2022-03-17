@@ -174,6 +174,7 @@ def index(request):
 	)
 
 # for searching
+# TODO: make this less scary
 def filter(request):
 	req = request.GET
 	# initialize general parameters
@@ -192,6 +193,7 @@ def filter(request):
 	new_search = req.get('newSearch', "")
 	words_as_string = req.get('words', "").strip()
 	words_list = re.findall(r'\w+', words_as_string.lower()) # like in add_data()
+
 	# TODO: if wordA's variants_same_word includes wordB and variants_grammatical includes wordC, then wordB's variants_grammatical should also include wordC, but that's not enforced in models.py and views.py
 	# get words to be searched for
 	words_list = remove_duplicates(words_list)
@@ -211,19 +213,8 @@ def filter(request):
 	for w in words_list:
 		words_as_string = words_as_string + w + " "
 	words_as_string = words_as_string[:-1]
-	# get utterances within search_set that match speaker and source
-	if speaker and Speaker.objects.filter(name=speaker).exists():
-		utterances = utterances.filter(speaker__name=speaker)
-	if source and Source.objects.filter(url=source).exists():
-		utterances = utterances.filter(source__url=source)
-	# now that the set is smaller, get utterances that have all of the words
-	# TODO: handle case where grammatical variations are specifically specified (e.g. user enters "mi mimi") so that anything the user enters is required
-	for w in words_list:
-		all_word_utters = CompleteUtterance.objects.filter(words__in=(all_variants[w]))
-		utterances = utterances.intersection(all_word_utters)
-		if not utterances.exists():
-			break
-	# add info about search
+	
+	# prepare invalid info about search
 	nonexistent_values = {}
 	if not_words:
 		nonexistent_values["words"] = str(not_words)[1:-1]
@@ -235,6 +226,21 @@ def filter(request):
 		source = ""
 	if nonexistent_values:
 		generate_message(request, "invalid criteria found", nonexistent_values)
+
+	# get utterances within search_set that match speaker and source
+	if speaker:
+		utterances = utterances.filter(speaker__name=speaker)
+	if source:
+		utterances = utterances.filter(source__url=source)
+	# now that the set is smaller, get utterances that have all of the words
+	# TODO: handle case where grammatical variations are specifically specified (e.g. user enters "mi mimi") so that anything the user enters is required
+	for w in words_list:
+		all_word_utters = CompleteUtterance.objects.filter(words__in=(all_variants[w]))
+		utterances = utterances.intersection(all_word_utters)
+		if not utterances.exists():
+			break
+	
+	# prepare valid info about search
 	search_values = {}
 	if words_list:
 		search_values["words"] = str(words_list)[1:-1]
@@ -242,6 +248,8 @@ def filter(request):
 		search_values["speaker"] = speaker
 	if source:
 		search_values["source"] = source
+
+	# add message with info about search
 	if not search_values:
 		utterances = CompleteUtterance.objects.all()
 		if new_search:
@@ -255,6 +263,7 @@ def filter(request):
 			generate_message(request, "successful new search", search_values)
 		else:
 			generate_message(request, "showing existing results", search_values)
+	
 	paging = Paginator(utterances.order_by('source', 'id'), page_size)
 	return render(
 		request,
