@@ -9,17 +9,19 @@
 	<link rel="stylesheet" type="text/css" href="{% static 'hilichurlian_database/style.css' %}">
 </head>
 <body>
-	{% block h1 %}
-	<h1>Hilichurlian Language Database</h1>
-	{% endblock %}
+	<header>
+		<a href="#main" id="skip-to-main" class="skip-to">Skip to main content</a>
+		
+		<h1>Hilichurlian Language Database</h1>
 
-	<nav>
-		<a href="{% url 'hilichurlian_database:index' %}">Home</a>
-		<a href="{% url 'hilichurlian_database:about' %}">About</a>
-		<a href="{% url 'hilichurlian_database:select' %}">View All Criteria</a>
-	</nav>
+		<nav>
+			<a href="{% url 'hilichurlian_database:index' %}">Home</a>
+			<a href="{% url 'hilichurlian_database:about' %}">About</a>
+			<a href="{% url 'hilichurlian_database:select' %}">View All Criteria</a>
+		</nav>
+	</header>
 
-	<main>
+	<main id="main">
 		{% if messages %}{% if message_types.non_search_messages %}
 		<section>
 			<h2>Information</h2>

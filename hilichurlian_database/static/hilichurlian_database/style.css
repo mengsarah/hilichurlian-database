@@ -19,6 +19,33 @@ body {
 	margin: 0 auto;
 }
 
+a.skip-to#skip-to-main {
+	position: absolute;
+	left: -10000px;
+	top: auto;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+}
+
+a.skip-to#skip-to-main:focus {
+	top: 1px;
+	left: 1px;
+	width: fit-content;
+	height: fit-content;
+	margin: 1px;
+	padding: 0.5rem;
+	border: 0.2rem solid;
+	border-radius: 0.5rem;
+	color: var(--dark-blue);
+	background-color: var(--light-blue);
+}
+
+a.skip-to#skip-to-main:active {
+	color: var(--dark-green);
+	background-color: var(--light-green);
+}
+
 h1, h2 {
 	text-align: center;
 }
