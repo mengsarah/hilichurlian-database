@@ -15,39 +15,39 @@
 
 <table>
 	<tr>
-		<th class="cell-wide">
+		<th scope="col" class="cell-wide">
 			Sentence or phrase
 		</th>
-		<th class="cell-narrow">
+		<th scope="col" class="cell-narrow">
 			Speaker
 		</th>
-		<th class="cell-wide">
+		<th scope="col" class="cell-wide">
 			Translation
 		</th>
-		<th class="cell-narrow">
+		<th scope="col" class="cell-narrow">
 			Translation source
 		</th>
-		<th class="cell-wide">
+		<th scope="col" class="cell-wide">
 			Context
 		</th>
-		<th class="cell-narrow">
+		<th scope="col" class="cell-narrow">
 			Source
 		</th>
 	</tr>
 	{% for utt in db_page %}
 	<tr class="row-{% cycle 'light' 'lighter' %}">
-		<td><div class="long-text">
+		<th scope="row"><div class="long-text">
 			{{utt.utterance}}
-		</div></td>
-		<td>
+		</div></th>
+		<td><div class="long-text">
 			{{utt.speaker.name}}
-		</td>
+		</div></td>
 		<td><div class="long-text">
 			{{utt.translation}}
 		</div></td>
-		<td>
+		<td><div class="long-text">
 			{{utt.translation_source}}
-		</td>
+		</div></td>
 		<td><div class="long-text">
 			{{utt.context}}
 		</div></td>

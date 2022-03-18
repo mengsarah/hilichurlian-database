@@ -179,16 +179,20 @@ th, td {
 	padding: 0.4rem;
 }
 
-th {
+th[scope="col"] {
 	background-color: var(--dark-gray);
 	color: white;
 }
 
-tr.row-light td {
+th[scope="row"] {
+	text-align: left;
+}
+
+tr.row-light td, tr.row-light th {
 	background-color: var(--gray);
 }
 
-tr.row-lighter td {
+tr.row-lighter td, tr.row-lighter th {
 	background-color: var(--lighter-gray);
 }
 
@@ -202,8 +206,7 @@ tr.row-lighter td {
 	width: 10%;
 }
 
-/* 1 per row (context); class for <div> within <td>;
- * doesn't work as a class for <td> on Firefox */
+/* class for <div> within <td> or <th> (doesn't work as a class for <td> on Firefox) */
 .long-text {
 	overflow: auto;
 	max-height: 4rem;
