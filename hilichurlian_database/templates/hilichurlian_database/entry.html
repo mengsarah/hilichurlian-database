@@ -1,0 +1,24 @@
+{% extends "hilichurlian_database/base.html" %}
+{% load static %}
+
+{% block content %}
+
+{% if entry %}
+
+	<h2>{{ type|capfirst }}: {{ entry }}</h2>
+
+	{% for field, value in entry_values.items %}
+	<h3>{{ field|capfirst }}</h3>
+	<p>{{ value }}</p>
+	{% endfor %}
+
+{% else %}
+
+	<h2>Entry Not Found</h2>
+
+	<p>This was probably something that I made by accident while I was still building the database.</p>
+	<p><a href="{% url 'hilichurlian_database:index' %}">Go back home</a></p>
+
+{% endif %}
+
+{% endblock %}

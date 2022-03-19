@@ -37,7 +37,7 @@
 	{% for utt in db_page %}
 	<tr class="row-{% cycle 'light' 'lighter' %}">
 		<th scope="row"><div class="long-text">
-			{{utt.utterance}}
+			<a href="{% url 'hilichurlian_database:utterance' utt.id %}">{{utt.utterance}}</a>
 		</div></th>
 		<td><div class="long-text">
 			{{utt.speaker.name}}

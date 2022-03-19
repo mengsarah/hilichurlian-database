@@ -10,6 +10,7 @@ urlpatterns = [
 	path('about', views.about, name='about'),
 	path('select', views.view_all_criteria, name='select'),
 	path('filter', views.filter, name='filter'),
+	path('utterance/<int:id>', views.view_utterance, name='utterance'),
 	# submissions are only ever temporarily open:
 	# path('submit', views.data_entry, name='data_entry'),
 	# for POST

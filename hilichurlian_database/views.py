@@ -173,6 +173,20 @@ def index(request):
 		database_public_view_context(paging, page, page_size)
 	)
 
+# general
+def view_entry(request, entry_queryset, entry_type):
+	render_page = "hilichurlian_database/entry.html"
+	
+	context = {"type": entry_type}
+	if entry_queryset.exists():
+		context["entry"] = entry_queryset.get()
+		context["entry_values"] = context["entry"].get_fields_as_dict()
+
+	return render(request, render_page, context)
+
+def view_utterance(request, id):
+	return view_entry(request, CompleteUtterance.objects.filter(id=id), "utterance")
+
 # for searching
 # TODO: make this less scary
 def filter(request):
