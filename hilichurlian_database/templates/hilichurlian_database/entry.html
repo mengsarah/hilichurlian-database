@@ -9,10 +9,10 @@
 
 	<div class="container flex flex-center">
 	{% for field, value in entry_values.items %}
-	{% if field == 'translation' %}<div class="container flex wide invisible-container">{% endif %}
+	{% if field == 'translation' %}<div class="container flex wide invisible-container">{% endif %}{# keeping certain boxes together #}
 		<section class="flex {% if field == 'context' and value %}medium{% else %}thin{% endif %}">
 			<h3>{{ field|capfirst }}</h3>
-			<p>{{ value }}</p>
+			<p>{% if value %}{{ value }}{% else %}[None found]{% endif %}</p>
 		</section>
 	{% if field == 'translation source' %}</div>{% endif %}
 	{% endfor %}
