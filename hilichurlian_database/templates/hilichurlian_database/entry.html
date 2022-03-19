@@ -12,7 +12,13 @@
 	{% if field == 'translation' %}<div class="container flex wide invisible-container">{% endif %}{# keeping certain boxes together #}
 		<section class="flex {% if field == 'context' and value %}medium{% else %}thin{% endif %}">
 			<h3>{{ field|capfirst }}</h3>
-			<p>{% if value %}{{ value }}{% else %}[None found]{% endif %}</p>
+			{% if value %}
+			<p>{{ value }}</p>
+			{% if "(" in value %}<p>(Context)</p>{% endif %}
+			{% if "[" in value %}<p>(Edited from original indirect translation)</p>{% endif %}
+			{% else %}
+			<p>(None found)</p>
+			{% endif %}
 		</section>
 	{% if field == 'translation source' %}</div>{% endif %}
 	{% endfor %}
