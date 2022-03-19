@@ -154,8 +154,9 @@ class CompleteUtterance(models.Model):
 	def get_fields_as_dict(self, order=[]):
 		fields_dict = {}
 		if order:
-			for field in order:
-				fields_dict[field] = CompleteUtterance._meta.get_field(field).value_to_string(self)
+			for field_name in order:
+				field = CompleteUtterance._meta.get_field(field_name)
+				fields_dict[field.verbose_name] = field.value_to_string(self)
 		else:
 			for field in CompleteUtterance._meta.get_fields():
 				fields_dict[field.name] = field.value_to_string(self)
