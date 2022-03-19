@@ -174,18 +174,18 @@ def index(request):
 	)
 
 # general
-def view_entry(request, entry_queryset, entry_type):
+def view_entry(request, entry_queryset, entry_type, order=[]):
 	render_page = "hilichurlian_database/entry.html"
-	
+
 	context = {"type": entry_type}
 	if entry_queryset.exists():
 		context["entry"] = entry_queryset.get()
-		context["entry_values"] = context["entry"].get_fields_as_dict()
+		context["entry_values"] = context["entry"].get_fields_as_dict(order)
 
 	return render(request, render_page, context)
 
 def view_utterance(request, id):
-	return view_entry(request, CompleteUtterance.objects.filter(id=id), "utterance")
+	return view_entry(request, CompleteUtterance.objects.filter(id=id), "utterance", ["utterance", "words", "speaker", "translation", "translation_source", "context", "source"])
 
 # for searching
 # TODO: make this less scary
