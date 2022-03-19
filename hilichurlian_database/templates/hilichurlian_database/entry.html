@@ -7,16 +7,22 @@
 
 	<h2>{{ type|capfirst }}: {{ entry }}</h2>
 
+	<div class="container flex flex-center">
 	{% for field, value in entry_values.items %}
-	<h3>{{ field|capfirst }}</h3>
-	<p>{{ value }}</p>
+	{% if field == 'translation' %}<div class="container flex wide invisible-container">{% endif %}
+		<section class="flex {% if field == 'context' and value %}medium{% else %}thin{% endif %}">
+			<h3>{{ field|capfirst }}</h3>
+			<p>{{ value }}</p>
+		</section>
+	{% if field == 'translation_source' %}</div>{% endif %}
 	{% endfor %}
+	</div>
 
 {% else %}
 
 	<h2>Entry Not Found</h2>
 
-	<p>This was probably something that I made by accident while I was still building the database.</p>
+	<p>This was probably something that I made by accident while I was still building the database and later had to delete.</p>
 	<p><a href="{% url 'hilichurlian_database:index' %}">Go back home</a></p>
 
 {% endif %}
