@@ -167,6 +167,7 @@ table, th, td {
 
 table {
 	background: black;
+	border-radius: 0.3rem;
 }
 
 th, td {
@@ -236,6 +237,7 @@ tr.row-lighter td, tr.row-lighter th {
 	padding-bottom: 0.5rem;
 	background: var(--gray);
 	border: 0.1rem solid var(--dark-gray);
+	border-radius: 0.3rem;
 }
 
 .flex.thin {
