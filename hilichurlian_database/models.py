@@ -151,10 +151,14 @@ class CompleteUtterance(models.Model):
 	object_history = HistoricalRecords()
 
 	# may want to let all models have this
-	def get_fields_as_dict(self):
+	def get_fields_as_dict(self, order=[]):
 		fields_dict = {}
-		for field in CompleteUtterance._meta.get_fields():
-			fields_dict[field.name] = field.value_to_string(self)
+		if order:
+			for field in order:
+				fields_dict[field] = CompleteUtterance._meta.get_field(field).value_to_string(self)
+		else:
+			for field in CompleteUtterance._meta.get_fields():
+				fields_dict[field.name] = field.value_to_string(self)
 		return fields_dict
 
 	def __str__(self):
