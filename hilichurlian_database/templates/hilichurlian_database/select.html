@@ -22,14 +22,14 @@
 		<h3>All Speakers</h3>
 		<div class="container flex">
 		{% for type in speaker_types %}
-		<div class="flex thin">
-		<h4>{% if type.1 != "Unknown" %}{{ type.1 }}{% else %}Other{% endif %}</h4>
-		<ul>
-			{% for speaker in speakers %}{% if speaker.type == type.0 %}
-			<li><a href="{% url 'hilichurlian_database:filter' %}?speaker={{speaker}}">{{ speaker }}</a></li>
-			{% endif %}{% endfor %}
-		</ul>
-		</div>
+			<div class="flex thin">
+				<h4>{% if type.1 != "Unknown" %}{{ type.1 }}{% else %}Other{% endif %}</h4>
+				<ul>
+					{% for speaker in speakers %}{% if speaker.type == type.0 %}
+					<li><a href="{% url 'hilichurlian_database:filter' %}?speaker={{speaker}}">{{ speaker }}</a></li>
+					{% endif %}{% endfor %}
+				</ul>
+			</div>
 		{% endfor %}
 		</div>
 	</section>
