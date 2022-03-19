@@ -15,7 +15,7 @@
 		<section class="flex {% if field == 'context' and value %}medium{% else %}thin{% endif %}">
 			<h3>{{ field|capfirst }}</h3>
 			{% if value %}
-				<p>{{ value }}</p>
+				<p>{{ value|linebreaks }}</p>
 				{% if field != "context" and "(" in value %}<p>(Context)</p>{% endif %}
 				{% if field != "context" and "[" in value %}<p>(Edited from original indirect translation)</p>{% endif %}
 			{% else %}
