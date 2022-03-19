@@ -150,5 +150,12 @@ class CompleteUtterance(models.Model):
 	
 	object_history = HistoricalRecords()
 
+	# may want to let all models have this
+	def get_fields_as_dict(self):
+		fields_dict = {}
+		for field in CompleteUtterance._meta.get_fields():
+			fields_dict[field.name] = field.value_to_string(self)
+		return fields_dict
+
 	def __str__(self):
 		return self.utterance
