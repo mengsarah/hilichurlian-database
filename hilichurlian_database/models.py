@@ -152,14 +152,30 @@ class CompleteUtterance(models.Model):
 
 	# may want to let all models have this
 	def get_fields_as_dict(self, order=[]):
+		# helper function
+		def get_value_as_string(field):
+			value_string = ""
+			if field.many_to_one:
+				# go get the other object
+				value_string = field.related_model.objects.get(id=field.value_to_string(self))
+			elif field.many_to_many:
+				# identify the other objects
+				for related_object in getattr(self, field.name).all():
+					# go get the other objects
+					value_string = value_string + str(field.related_model.objects.get(pk=related_object)) + ", "
+				value_string = value_string[:-2]
+			else:
+				value_string = field.value_to_string(self)
+			return value_string
+		
 		fields_dict = {}
 		if order:
 			for field_name in order:
 				field = CompleteUtterance._meta.get_field(field_name)
-				fields_dict[field.verbose_name] = field.value_to_string(self)
+				fields_dict[field.verbose_name] = get_value_as_string(field)
 		else:
 			for field in CompleteUtterance._meta.get_fields():
-				fields_dict[field.name] = field.value_to_string(self)
+				fields_dict[field.verbose_name] = get_value_as_string(field)
 		return fields_dict
 
 	def __str__(self):
