@@ -103,17 +103,17 @@ class Source(Entry):
 
 	name = models.CharField(
 		max_length = 200,
-		help_text = "Please enter the name of the source, such as a quest name or item name. (This is not the name of a website or other host of a source.)"
+		help_text = "Name of the source. E.g., a quest name, an item name. (This is not the name of a website or other host of a source.)"
 	)
 	url = models.CharField(
 		verbose_name = "URL",
 		max_length = 200,
-		help_text = "Must be the URL of an online resource documenting the utterance and its translation if provided."
+		help_text = "The URL of an online resource documenting the utterance and its translation if provided."
 	)
 	version = models.CharField(
 		max_length = 3,
 		choices = VERSIONS,
-		help_text = 'Please select the first live version of Genshin Impact in which this source appeared. Select "Pre-launch" only if this source is a pre-launch post from miHoYo or was never released after Genshin Impact launched.'
+		help_text = 'The first live version of Genshin Impact in which this source appeared. Select "Pre-launch" only if the source is a pre-launch post from miHoYo or was never released after Genshin Impact launched.'
 	)
 	related_sources = models.ManyToManyField(
 		"self",
@@ -141,13 +141,13 @@ class Word(Entry):
 		"self",
 		verbose_name = "other written forms of this word",
 		blank = True, # there may not be variants in the database yet
-		help_text = "Select words that are exactly the same as this word and are only elongated, shortened, or otherwise similarly altered. For example, 'yaaaa' is an elongated version of 'ya' and is otherwise the exact same word."
+		help_text = "Words that are exactly the same as this word. For example, 'yaaaa' is exactly the same word as 'ya' and is only elongated."
 	)
 	variants_grammatical = models.ManyToManyField(
 		"self",
 		verbose_name = "related words",
 		blank = True, # there may not be variants in the database yet
-		help_text = "Select words that are grammatical variants of this word. These words must not be the same words. For example, 'mi' and 'mimi' are grammatical variants of each other."
+		help_text = "Different words that are likely grammatical variants of this word. For example, 'mi' and 'mimi' are likely grammatical variants of each other."
 	)
 
 	object_history = HistoricalRecords()
@@ -166,23 +166,23 @@ class CompleteUtterance(Entry):
 	# because utterances do not have to be unique!
 	utterance = models.CharField(
 		max_length = 200,
-		help_text = "Please enter the full Hilichurlian sentence or phrase that was spoken or written. Individual words are acceptable if they were said as if they were a single sentence, such as in a one-word exclamation."
+		help_text = "The full Hilichurlian sentence or phrase that was spoken or written. Individual words acceptable if said as a single sentence, such as in a one-word exclamation."
 	)
 	words = models.ManyToManyField(Word) # auto assign based on utterance
 	speaker = models.ForeignKey(Speaker, on_delete=models.PROTECT) # prevent speaker deletion because it should never happen; if it does, then it needs to be manually handled (e.g. retcon)
 	translation = models.CharField(
 		max_length = 200,
 		blank = True,
-		help_text = "If there was a translation given in-game for this specific Hilichurlian sentence or phrase, enter the translation here. Unofficial translations are not allowed, regardless of how well-researched they are. Parentheses can be used for indirect translations, including inference from game mechanics such as successful item turn-in."
+		help_text = 'The translation for this exact utterance, if available. Unofficial translations are not allowed, regardless of how well-researched they are. Alterations acceptable to match utterance (e.g., "He said he wants to eat meat." can be "[I want to eat meat.]"); use brackets. Indirect translations acceptable, including inference from game mechanics (e.g., item submission); use parentheses.'
 	)
 	translation_source = models.CharField(
 		max_length = 75,
 		blank = True,
-		help_text = "Required if a translation is provided. Provide an in-game item when possible. Parentheses should be used if the source is a game mechanic, such as successful item turn-in."
+		help_text = "Required if a translation is provided. Provide an in-game item when possible. Parentheses should be used if the source is a game mechanic, such as item submission."
 	)
 	context = models.TextField(
 		blank = True,
-		help_text = "Should be official material when possible. Include as much as needed."
+		help_text = "Official material when possible. Include as much as needed."
 	)
 	source = models.ForeignKey(Source, on_delete=models.PROTECT) # prevent source deletion because it should never happen; if it does, then it needs to be manually handled (e.g. retcon)
 	
