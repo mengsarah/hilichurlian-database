@@ -23,7 +23,45 @@ def get_version_list():
 
 ### MODELS ###
 
-# All models have the following constants:
+##### ABSTRACT MODELS #####
+
+class Entry(models.Model):
+	def get_fields_as_dict(self, order=[]):
+		# helper function
+		def get_value_for_dict(field):
+			# TODO: just string and not list for anything other than many-to-many
+			value_for_dict = []
+			if field.many_to_one:
+				# go get the other object
+				value_for_dict.append(field.related_model.objects.get(id=field.value_to_string(self)))
+			elif field.many_to_many:
+				# identify the other objects
+				for related_object in getattr(self, field.name).all():
+					# go get the other objects
+					value_for_dict.append(field.related_model.objects.get(pk=related_object))
+			else:
+				value_for_dict.append(field.value_to_string(self))
+			if not value_for_dict[0]:
+				value_for_dict = []
+			return value_for_dict
+		
+		# get fields as dict
+		fields_dict = {}
+		if order:
+			for field_name in order:
+				field = self.__class__._meta.get_field(field_name)
+				fields_dict[field.verbose_name] = get_value_for_dict(field)
+		else:
+			for field in self.__class__._meta.get_fields():
+				fields_dict[field.verbose_name] = get_value_for_dict(field)
+		return fields_dict
+	
+	class Meta:
+		abstract = True
+
+##### CONCRETE MODELS #####
+
+# All concrete models have the following constants:
 ## FORM_FIELDS
 ### for which fields should show up in user-facing forms
 ## SPECIALLY_HANDLED
@@ -31,7 +69,7 @@ def get_version_list():
 ## BULK_UPDATABLE
 ### for which fields can be updated in bulk in the admin site
 
-class Speaker(models.Model):
+class Speaker(Entry):
 	SPEAKER_TYPES = [
 		("hili", "Hilichurl"),
 		# ("abys", "Abyss Order"),
@@ -54,7 +92,7 @@ class Speaker(models.Model):
 	def __str__(self):
 		return self.name
 
-class Source(models.Model):
+class Source(Entry):
 	VERSIONS = get_version_list()
 
 	FORM_FIELDS = ['url', 'version']
@@ -87,7 +125,7 @@ class Source(models.Model):
 	def __str__(self):
 		return self.name
 
-class Word(models.Model):
+class Word(Entry):
 	FORM_FIELDS = []
 	# auto-populated fields: word
 	# manually populated fields: variants_same_word, variants_grammatical
@@ -117,7 +155,7 @@ class Word(models.Model):
 	def __str__(self):
 		return self.word
 
-class CompleteUtterance(models.Model):
+class CompleteUtterance(Entry):
 	FORM_FIELDS = ['utterance', 'speaker', 'translation', 'translation_source', 'context', 'source']
 	SPECIALLY_HANDLED = ['speaker', 'source']
 	# auto-populated fields: words
@@ -149,34 +187,6 @@ class CompleteUtterance(models.Model):
 	source = models.ForeignKey(Source, on_delete=models.PROTECT) # prevent source deletion because it should never happen; if it does, then it needs to be manually handled (e.g. retcon)
 	
 	object_history = HistoricalRecords()
-
-	# may want to let all models have this
-	def get_fields_as_dict(self, order=[]):
-		# helper function
-		def get_value_as_string(field):
-			value_string = ""
-			if field.many_to_one:
-				# go get the other object
-				value_string = field.related_model.objects.get(id=field.value_to_string(self))
-			elif field.many_to_many:
-				# identify the other objects
-				for related_object in getattr(self, field.name).all():
-					# go get the other objects
-					value_string = value_string + str(field.related_model.objects.get(pk=related_object)) + ", "
-				value_string = value_string[:-2]
-			else:
-				value_string = field.value_to_string(self)
-			return value_string
-		
-		fields_dict = {}
-		if order:
-			for field_name in order:
-				field = CompleteUtterance._meta.get_field(field_name)
-				fields_dict[field.verbose_name] = get_value_as_string(field)
-		else:
-			for field in CompleteUtterance._meta.get_fields():
-				fields_dict[field.verbose_name] = get_value_as_string(field)
-		return fields_dict
 
 	def __str__(self):
 		return self.utterance
