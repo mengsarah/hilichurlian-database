@@ -39,6 +39,8 @@ class Entry(models.Model):
 				for related_object in getattr(self, field.name).all():
 					# go get the other objects
 					value_for_dict.append(field.related_model.objects.get(pk=related_object))
+			elif field.choices:
+				value_for_dict.append(getattr(self, 'get_%s_display' % field.name)())
 			else:
 				value_for_dict.append(field.value_to_string(self))
 			if value_for_dict and not value_for_dict[0]:
