@@ -14,15 +14,17 @@
 
 		<section class="flex {% if field == 'context' and value %}medium{% else %}thin{% endif %}">
 			<h3>{{ field|capfirst }}</h3>
-			{% if value.0 %} {# all items are currently wrapped in lists to differentiate strings from lists #}
-				{% if value.1 %}{# i.e. if the value has multiple items (because it's from a ManyToMany field) #}
-				<p>{% for item in value|slice:":-1" %}<a href="#">{{ item }}</a>, {% endfor %}<a href="#">{{ value|last }}</a></p>
+			{% if value.0 %} {# all items currently wrapped in lists to differentiate from strings #}
+				{% if value.1 %}{# value has multiple items #}
+					<p>{% for item in value|slice:":-1" %}<a href="#">{{ item }}</a>, {% endfor %}<a href="#">{{ value|last }}</a></p>
 				{% else %}
-				<p>{% if value.0.word %}<a href="#">{% endif %}
-					{{ value.0|linebreaks }}
-				{% if value.0.word %}</a>{% endif %}</p>
-				{% if field != "context" and field != "source" and "(" in value.0 %}<p>(Context)</p>{% endif %}
-				{% if field != "context" and field != "source" and "[" in value.0 %}<p>(Edited from original indirect translation)</p>{% endif %}
+					<p>{% if value.0.word %}<a href="#">{% endif %}
+						{{ value.0|linebreaks }}
+					{% if value.0.word %}</a>{% endif %}</p>
+
+					{% if field != "context" and field != "source" and "(" in value.0 %}<p>(Context)</p>{% endif %}
+
+					{% if field != "context" and field != "source" and "[" in value.0 %}<p>(Edited from original indirect translation)</p>{% endif %}
 				{% endif %}
 			{% else %}
 				<p>(None found)</p>
