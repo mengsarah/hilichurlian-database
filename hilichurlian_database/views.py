@@ -187,6 +187,15 @@ def view_entry(request, entry_queryset, entry_type, order=[]):
 def view_utterance(request, id):
 	return view_entry(request, CompleteUtterance.objects.filter(id=id), "utterance", ["utterance", "words", "speaker", "translation", "translation_source", "context", "source"])
 
+def view_word(request, word):
+	return view_entry(request, Word.objects.filter(pk=word), "word", ["word", "variants_same_word", "variants_grammatical"])
+
+def view_source(request, id):
+	return view_entry(request, Source.objects.filter(id=id), "source", ["name", "url", "version", "related_sources"])
+
+def view_speaker(request, id):
+	return view_entry(request, Speaker.objects.filter(id=id), "speaker", ["name", "type"])
+
 # for searching
 # TODO: make this less scary
 def filter(request):
