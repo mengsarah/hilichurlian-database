@@ -41,7 +41,7 @@ class Entry(models.Model):
 					value_for_dict.append(field.related_model.objects.get(pk=related_object))
 			else:
 				value_for_dict.append(field.value_to_string(self))
-			if not value_for_dict[0]:
+			if value_for_dict and not value_for_dict[0]:
 				value_for_dict = []
 			return value_for_dict
 		
