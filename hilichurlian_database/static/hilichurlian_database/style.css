@@ -263,6 +263,13 @@ tr.row-lighter td, tr.row-lighter th {
 	max-width: 75%;
 }
 
+.flex.inner {
+	border: none;
+	padding-bottom: 0;
+	margin-top: 0;
+	margin-bottom: 0;
+}
+
 /* FORMS */
 
 form {
