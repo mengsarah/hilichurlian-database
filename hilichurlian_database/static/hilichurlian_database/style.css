@@ -123,15 +123,43 @@ footer {
 footer img, footer .text {
 	display: inline-block;
 	vertical-align: middle;
+	margin: 15px;
 }
 
-footer img {
-	max-width: 25%;
-	border: 2px black solid;
+footer p, footer img {
+	margin: 0;
 }
 
 footer .text {
-	max-width: 70%;
+	max-width: 65%;
+}
+
+.bordered-image {
+	border: 2px black solid;
+}
+
+#img-three-hilichurls {
+	max-width: 25%;
+}
+
+#donate-container {
+	margin-top: 1em;
+	flex-direction: row;
+	align-items: flex-end;
+}
+
+#donate-container div {
+	vertical-align: bottom;
+	width: fit-content;
+}
+
+#img-ko-fi-cup {
+	width: 1.5rem;
+	margin: 0;
+}
+
+#img-lumine {
+	width: 3rem;
 }
 
 /* DATABASE TABLE NAV */
@@ -337,7 +365,7 @@ input[type="checkbox"] {
 /* small screens/large text */
 @media (max-width: 35rem) {
 	/* ALL PAGES */
-	footer img, footer .text {
+	footer img, #img-three-hilichurls, footer .text {
 		max-width: 100%;
 	}
 

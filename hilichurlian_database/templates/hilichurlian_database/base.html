@@ -40,11 +40,19 @@
 	</main>
 
 	<footer>
-		<img src="{% static 'hilichurlian_database/hilichurls.png' %}" alt="Three Hilichurls: one sleeping, one chilling, and one sweating while holding a Pyro Slime." />
+		<img id="img-three-hilichurls" src="{% static 'hilichurlian_database/hilichurls.png' %}" alt="Three Hilichurls: one sleeping, one chilling, and one sweating while holding a Pyro Slime." class="bordered-image" />
 		<div class="text">
 			<p>This site is not affiliated with or endorsed by miHoYo.</p>
 			<p>© All rights reserved by miHoYo. Other properties belong to their respective owners.</p>
-			<p>Want to help me cover website costs? You can donate to me at <a href="https://ko-fi.com/solarmist">my Ko-fi</a>.</p>
+			<div id="donate-container" class="container flex">
+				<div>
+					<p>Want to help me cover website costs?</p>
+					<a href="https://ko-fi.com/solarmist">Donate to me on Ko-fi. <img id="img-ko-fi-cup" src="https://storage.ko-fi.com/cdn/brandasset/kofi_s_logo_nolabel.png" alt="Ko-fi cup" /></a>
+				</div>
+				<div>
+					<img id="img-lumine" src="https://static.wikia.nocookie.net/gensin-impact/images/e/ee/Icon_Emoji_016_Lumine_Will_1_Mora_do%3F.png/revision/latest?cb=20210906043859" alt="Lumine with a tear in one eye sheepishly holding 1 Mora."/>
+				</div>
+			</div>
 		</div>
 	</footer>
 </body>
