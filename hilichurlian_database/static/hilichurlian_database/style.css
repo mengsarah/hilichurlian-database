@@ -55,7 +55,7 @@ h3, h4 {
 }
 
 main {
-	margin: 0.5rem 1rem;
+	margin: 10px 20px;
 }
 
 .info, .information {
@@ -82,7 +82,7 @@ ul {
 
 ul.messages, div.messages {
 	padding-left: 0;
-	margin: 0.5rem;
+	margin: 0.5em 10px;
 }
 
 ul.messages li, div.messages {
@@ -116,7 +116,7 @@ nav a:active {
 }
 
 footer {
-	padding: 0.5rem 1rem;
+	padding: 15px 20px;
 	background-color: var(--gray);
 }
 
@@ -205,7 +205,7 @@ tr.row-lighter td, tr.row-lighter th {
 /* class for <div> within <td> or <th> (doesn't work as a class for <td> on Firefox) */
 .long-text {
 	overflow: auto;
-	max-height: 4rem;
+	max-height: 4em;
 }
 
 /* VIEW ALL CRITERIA/SELECT AND INDIVIDUAL ENTRY PAGES */
@@ -227,7 +227,7 @@ tr.row-lighter td, tr.row-lighter th {
 }
 
 .flex h3, .flex h4 {
-	margin-top: 0.75rem;
+	margin-top: 0.75em;
 }
 
 .flex.thin, .flex.medium, .flex.wide {
@@ -273,7 +273,7 @@ tr.row-lighter td, tr.row-lighter th {
 /* FORMS */
 
 form {
-	margin: 0.5rem auto;
+	margin: 0.5em auto;
 }
 
 .field-required {
@@ -296,7 +296,7 @@ form {
 }
 
 .long-form .form-field {
-	margin: 0.5rem auto;
+	margin: 0.5em auto;
 }
 
 /* first "column"  */
