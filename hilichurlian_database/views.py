@@ -296,7 +296,7 @@ def filter(request):
 
 # the /select page
 def view_all_criteria(request):
-	sources = Source.objects.order_by('name', 'version')
+	sources = Source.objects.order_by('version', 'name')
 	speakers = Speaker.objects.order_by('type', 'name')
 	words = Word.objects.order_by('word')
 	return render(request, "hilichurlian_database/select.html", {
