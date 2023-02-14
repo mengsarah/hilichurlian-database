@@ -15,6 +15,7 @@ SpeakerForm = modelform_factory(Speaker, fields=Speaker.FORM_FIELDS)
 
 ### GLOBAL CONSTANTS ###
 DEFAULT_PAGE_SIZE = 10
+SUBMISSIONS_OPEN = True
 
 ### HELPER FUNCTIONS ###
 
@@ -103,7 +104,7 @@ def database_public_view_context(paginator, page_num, page_size, words="", simil
 
 # submit_type is the "name" in the form object in data_entry() (the /submit page)
 def add_data(request, submit_type):
-	if (request.method == 'POST') and submit_type:
+	if SUBMISSIONS_OPEN and (request.method == 'POST') and submit_type:
 		data = request.POST
 		new_entry = submit_type
 		if submit_type == "utterance":

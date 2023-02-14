@@ -13,9 +13,10 @@ urlpatterns = [
 	path('utterance/<int:id>', views.view_utterance, name='utterance'),
 	path('word/<slug:word>', views.view_word, name='word'),
 	path('source/<int:id>', views.view_source, name='source'),
-	path('speaker/<int:id>', views.view_speaker, name='speaker'),
-	# submissions are only ever temporarily open:
-	# path('submit', views.data_entry, name='data_entry'),
-	# for POST
-	# path('add_data/<slug:submit_type>', views.add_data, name='add_data'),
+	path('speaker/<int:id>', views.view_speaker, name='speaker')
 ]
+
+if views.SUBMISSIONS_OPEN:
+	urlpatterns.append(path('submit', views.data_entry, name='data_entry'))
+	# for POST
+	urlpatterns.append(path('add_data/<slug:submit_type>', views.add_data, name='add_data'))
