@@ -8,6 +8,10 @@ from .models import Speaker, Source, Word, CompleteUtterance
 from .templatetags import describe_url
 import re
 
+import os
+from dotenv import load_dotenv
+
+
 ### FORM CLASSES ###
 CompleteUtteranceForm = modelform_factory(CompleteUtterance, fields=CompleteUtterance.FORM_FIELDS)
 SourceForm = modelform_factory(Source, fields=Source.FORM_FIELDS)
@@ -15,7 +19,9 @@ SpeakerForm = modelform_factory(Speaker, fields=Speaker.FORM_FIELDS)
 
 ### GLOBAL CONSTANTS ###
 DEFAULT_PAGE_SIZE = 10
-SUBMISSIONS_OPEN = True
+
+load_dotenv()
+SUBMISSIONS_OPEN = (os.environ.get('SUBMISSIONS_OPEN', 'False') == 'True')
 
 ### HELPER FUNCTIONS ###
 
