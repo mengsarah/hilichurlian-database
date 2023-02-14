@@ -12,8 +12,9 @@ from simple_history.models import HistoricalRecords # for logging changes
 # updated for Version 2.4 (January 2022)
 def get_version_list():
 	VERSIONS_ONE = [ 1 + (x/10.0) for x in range(7) ] # 1.0 through 1.6
-	VERSIONS_TWO = [ 2 + (x/10.0) for x in range(5) ] # 2.0 through 2.4
-	VERSIONS_RAW = [ *VERSIONS_ONE, *VERSIONS_TWO ]
+	VERSIONS_TWO = [ 2 + (x/10.0) for x in range(9) ] # 2.0 through 2.8
+	VERSIONS_THREE = [ 3 + (x/10.0) for x in range(6) ] # 3.0 through 3.5
+	VERSIONS_RAW = [ *VERSIONS_ONE, *VERSIONS_TWO, *VERSIONS_THREE ]
 	version_list = [("0", "Pre-launch")] 
 	# "0" is not for utterances that also appear post-launch
 	for version in VERSIONS_RAW:
